@@ -1,0 +1,27 @@
+{
+  "name": "type-audit",
+  "version": "0.8.0",
+  "description": "Package for type checking",
+  "main": "type-audit.js",
+  "scripts": {
+    "lint": "eslint . --color --format stylish",
+    "lint:fix": "eslint . --color --format stylish --fix",
+    "test": "echo \"No test specified\""
+  },
+  "author": "victoraspirin",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/type-audit/type-audit.git"
+  },
+  "homepage": "https://github.com/type-audit/type-audit",
+  "bugs": {
+    "url": "https://github.com/type-audit/type-audit/issues"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "babel-eslint": "^10.0.2",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2"
+  }
+}
