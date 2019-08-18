@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint . --color --format stylish",
     "lint:fix": "eslint . --color --format stylish --fix",
-    "test": "echo \"No test specified\""
+    "test": "jest"
   },
   "author": "victoraspirin",
   "repository": {
@@ -17,12 +17,23 @@
   "bugs": {
     "url": "https://github.com/type-audit/type-audit/issues"
   },
-  "keywords": ["type", "check"],
+  "keywords": [
+    "type",
+    "check"
+  ],
   "license": "MIT",
   "devDependencies": {
+    "@babel/preset-env": "^7.5.5",
     "babel-eslint": "^10.0.2",
+    "babel-jest": "^24.9.0",
     "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.18.2"
+    "eslint-plugin-import": "^2.18.2",
+    "jest": "^24.9.0"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
   }
 }
