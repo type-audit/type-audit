@@ -8,7 +8,7 @@ const Is = {
      * @param {boolean} [isRequired] Значение null или undefined не допускается (опционально)
      * @return {boolean}
      */
-    ['function'](value, isRequired) {
+    function(value, isRequired) {
         return (!isRequired && value == null) || (typeof value === 'function');
     },
 
