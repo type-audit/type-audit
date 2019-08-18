@@ -122,27 +122,26 @@ const Prop = checkers.reduce((result, method) => {
     result[method] = f;
     return result;
 }, {});
+Object.freeze(Prop);
 
 
 
 /**
- * Класс с методами проверки типов значений
+ * Экспортируемый объект
  */
-export default class TypeAudit {
+const TypeAudit = {
     /**
      * @public
-     * @static
      * @type {TypeAudit.is}
      */
-    static is = Is;
+    is: Is,
 
     /**
      * @public
-     * @static
      * @type {TypeAudit.prop}
      */
-    static prop = Prop;
-}
+    prop: Prop
+};
 
 checkers.forEach((method) => {
     const needTypeInfo = 0 < argLevels[method];
@@ -150,7 +149,6 @@ checkers.forEach((method) => {
     if (needTypeInfo) {
         /**
          * @public
-         * @static
          * @param {*} value Проверяемое значение
          * @param {string|function} typeInfo Инормация о типе/классе проверяемого значения
          * @param {function|string} naming Наименование при ошибке (строка или функция, возвращающая строку)
@@ -165,7 +163,6 @@ checkers.forEach((method) => {
     else {
         /**
          * @public
-         * @static
          * @param {*} value Проверяемое значение
          * @param {function|string} naming Наименование при ошибке (строка или функция, возвращающая строку)
          * @param {boolean} [isRequired] Значение null или undefined не допускается (опционально)
@@ -177,6 +174,9 @@ checkers.forEach((method) => {
         };
     }
     if (checker !== undefined) {
-        Object.defineProperty(TypeAudit, method, {configurable:true, enumerable:false, writable:true, value:checker});
+        TypeAudit[method] = checker;
     }
 });
+Object.freeze(TypeAudit);
+
+export default TypeAudit;
