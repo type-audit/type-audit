@@ -9,7 +9,6 @@
   "rules": {
     "indent": ["error", 4],
     "max-len": ["error", {"code":120}],
-    "max-classes-per-file": ["error", 3],
     "no-multiple-empty-lines": ["error", {"max":3}],
     "comma-dangle": ["error", "never"],
     "brace-style": ["error", "stroustrup"],
