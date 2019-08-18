@@ -29,9 +29,7 @@ const TYPE_NAMES = {
  * Список всех имён проверок из класса Is
  * @type {Array<string>}
  */
-const checkers = Object.getOwnPropertyNames(Is).filter(
-    ((excludes, item) => !excludes.includes(item)).bind(undefined, Object.getOwnPropertyNames(class {}))
-);
+const checkers = Object.getOwnPropertyNames(Is).filter((item) => typeof Is[item] === 'function');
 
 /**
  * Количество дополнительных аргументов проверок из класса Is
