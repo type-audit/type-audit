@@ -1,7 +1,7 @@
 {
   "name": "type-audit",
   "version": "0.8.0",
-  "description": "Package for type checking",
+  "description": "Check the types of variables, arguments and other values where necessary",
   "main": "type-audit.js",
   "scripts": {
     "lint": "eslint . --color --format stylish",
@@ -17,6 +17,7 @@
   "bugs": {
     "url": "https://github.com/type-audit/type-audit/issues"
   },
+  "keywords": ["type", "check"],
   "license": "MIT",
   "devDependencies": {
     "babel-eslint": "^10.0.2",
