@@ -75,7 +75,7 @@ const _errMessage = (naming, type, value, isRequired) => {
     else {
         throw new TypeError(`Wrong argument "naming": ${naming}`);
     }
-    return `${name} ${isRequired ? 'must be' : 'can be only'} ${type}': ${value}`;
+    return `${name} ${isRequired ? 'must be' : 'can be only'} ${type}: ${value}`;
 };
 
 /**
