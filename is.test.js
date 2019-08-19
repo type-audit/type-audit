@@ -45,6 +45,20 @@ const VALUES = {
 
 
 /**
+ * @param {object} obj
+ * @return {Array<string>}
+ */
+const _getOwnMethods = (obj) => Object.getOwnPropertyNames(obj).filter((name) => typeof obj[name] === 'function');
+
+/**
+ * @param {object} obj
+ * @return {Array<string>}
+ */
+const _getOwnProperties = (obj) => Object.getOwnPropertyNames(obj).filter((name) => typeof obj[name] !== 'function');
+
+
+
+/**
  * @param {object} shortTable
  * @param {Array<string>} methods
  * @param {object} values
@@ -100,27 +114,25 @@ const _expandTableSimple = (shortTable, methods, values) => {
 
 
 describe('Module "Is"', () => {
-    it('Содержит нужное количество членов', () => {
-        const members = Object.getOwnPropertyNames(Is);
+    it('Содержит все нужные и не содержит посторонние методы', () => {
+        const methods = _getOwnMethods(Is);
         expect(
-            members.length
+            methods.length
         ).toBe(
             SIMPLE_METHODS.length + TYPED_METHODS.length
         );
-    });
-
-    it('Все члены являются методами', () => {
-        const members = Object.getOwnPropertyNames(Is);
         expect(
-            members.every((name) => typeof Is[name] === 'function')
+            methods.every((name) => SIMPLE_METHODS.indexOf(name) !== -1 || TYPED_METHODS.indexOf(name) !== -1)
         ).toBeTruthy();
     });
 
-    it('Не содержит посторонних методов', () => {
-        const members = Object.getOwnPropertyNames(Is);
+    it('Содержит все нужные и не содержит посторонние свойства', () => {
+        const properties = _getOwnProperties(Is);
         expect(
-            members.every((name) => SIMPLE_METHODS.indexOf(name) !== -1 || TYPED_METHODS.indexOf(name) !== -1)
-        ).toBeTruthy();
+            properties.length
+        ).toBe(
+            0
+        );
     });
 
     it.each(_expandTableSimple({
@@ -298,4 +310,6 @@ describe('Module "Is"', () => {
     }, SIMPLE_METHODS, VALUES))('Метод "%s": (%O, %s)', (method, value, isRequired, result) => {
         expect(Is[method](value, isRequired)).toBe(result);
     });
+
+    it.todo('Проверки типизированных методов');
 });
