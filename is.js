@@ -19,7 +19,7 @@ const Is = {
      * @return {boolean}
      */
     object(value, isRequired) {
-        return isRequired ? (value != null && typeof value === 'object') : (value == null || typeof value === 'object');
+        return value == null ? !isRequired : (typeof value === 'object' && !Array.isArray(value));
     },
 
     /**
