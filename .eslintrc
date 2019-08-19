@@ -15,10 +15,20 @@
     "no-param-reassign": ["error", {"props":false}],
     "valid-typeof":["error", {"requireStringLiterals":false}],
     "object-curly-spacing": ["error", "never"],
-    "object-curly-newline": ["off"],
+    "object-curly-newline": "off",
     "key-spacing": "off",
-    "consistent-return": ["off"],
-    "yoda": ["off"],
-    "no-underscore-dangle": ["off"]
-  }
+    "consistent-return": "off",
+    "yoda": "off",
+    "no-underscore-dangle": "off"
+  },
+  "overrides": [
+    {
+      "files": ["*.test.js"],
+      "env": {
+        "jest": true
+      },
+      "rules": {
+      }
+    }
+  ]
 }
