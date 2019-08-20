@@ -24,12 +24,17 @@ const TYPED_METHODS = [
     'instanceOf'
 ];
 
+class TestClass1 {}
+class TestClass2 {}
+
 const VALUES = {
     func: () => {},
     'arr-1': [],
     'arr-2': [123],
     'obj-1': {},
     'obj-2': {prop:'123'},
+    'obj-c1': new TestClass1(),
+    'obj-c2': new TestClass2(),
     'str-1': '',
     'str-2': 'abc',
     'int-1': 0,
@@ -86,6 +91,10 @@ describe('Module "Is"', () => {
                     ['obj-1', 'false'],
                     ['obj-2', 'true'],
                     ['obj-2', 'false'],
+                    ['obj-c1', 'true'],
+                    ['obj-c1', 'false'],
+                    ['obj-c2', 'true'],
+                    ['obj-c2', 'false'],
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
@@ -243,6 +252,29 @@ describe('Module "Is"', () => {
         'Метод "%s": (%O, %s)',
         (method, value, isRequired, result) => {
             expect(Is[method](value, isRequired)).toBe(result);
+        }
+    );
+
+    it.each(Utils.expandTable({
+        instanceOf:[
+            {
+                args:[
+                    ['obj-c1', 'cls-1', 'true'],
+                    ['obj-c1', 'cls-1', 'false'],
+                    ['obj-c2', 'cls-2', 'true'],
+                    ['obj-c2', 'cls-2', 'false'],
+                    ['null', 'cls-1', 'false'],
+                    ['null', 'cls-2', 'false'],
+                    ['undef', 'cls-1', 'false'],
+                    ['undef', 'cls-2', 'false']
+                ],
+                result:true},
+            {result:false}
+        ]
+    }, TYPED_METHODS, VALUES, {'cls-1':TestClass1, 'cls-2':TestClass2}, Utils.pick(VALUES, ['true', 'false'])))(
+        'Метод "%s": (%O, %O, %s)',
+        (method, value, Clazz, isRequired, result) => {
+            expect(Is[method](value, Clazz, isRequired)).toBe(result);
         }
     );
 
