@@ -48,7 +48,7 @@ const argLevels = checkers.reduce((result, method) => {
 /**
  * @protected
  * @param {function|string} naming Наименование при ошибке (строка или функция, возвращающая строку)
- * @param {string} type Тип проверяемого значения
+ * @param {function|string} type Тип проверяемого значения
  * @param {*} value Проверяемое значение
  * @param {boolean} [isRequired] Значение null или undefined не допускается (опционально)
  * @return {string}
@@ -75,7 +75,7 @@ const _errMessage = (naming, type, value, isRequired) => {
     else {
         throw new TypeError(`Wrong argument "naming": ${naming}`);
     }
-    return `${name} ${isRequired ? 'must be' : 'can be only'} ${type}: ${value}`;
+    return `${name} ${isRequired ? 'must be' : 'can be only'} ${typeof type === 'function' ? type() : type}: ${value}`;
 };
 
 /**
