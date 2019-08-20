@@ -28,6 +28,7 @@
         "jest": true
       },
       "rules": {
+        "max-classes-per-file": ["error", 3]
       }
     }
   ]
