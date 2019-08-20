@@ -1,3 +1,4 @@
+import * as Utils from './test-utils';
 import TypeAudit from './type-audit';
 import Is from './is';
 
@@ -37,86 +38,17 @@ const VALUES = {
     'int-3': -123,
     'num-1': 0.123,
     'num-2': -0.123,
-    'bool-1': true,
-    'bool-2': false,
+    true: true,
+    false: false,
     null: null,
     undef: undefined
 };
 
 
 
-/**
- * @param {object} obj
- * @return {Array<string>}
- */
-const _getOwnMethods = (obj) => Object.getOwnPropertyNames(obj).filter((name) => typeof obj[name] === 'function');
-
-/**
- * @param {object} obj
- * @return {Array<string>}
- */
-const _getOwnProperties = (obj) => Object.getOwnPropertyNames(obj).filter((name) => typeof obj[name] !== 'function');
-
-
-
-/**
- * @param {object} shortTable
- * @param {Array<string>} methods
- * @param {object} values
- * @return {Array<Array>}
- */
-const _expandTableSimple = (shortTable, methods, values) => {
-    if (shortTable == null || typeof shortTable !== 'object') {
-        throw new Error(`Wrong argument "shortTable:" ${shortTable}`);
-    }
-    if (!Array.isArray(methods) || !methods.every((item) => typeof item === 'string')) {
-        throw new Error(`Wrong argument "methods:" ${methods}`);
-    }
-    if (values == null || typeof values !== 'object') {
-        throw new Error(`Wrong argument "values:" ${values}`);
-    }
-    return methods.reduce((table, method) => {
-        const variants = shortTable[method];
-        if (variants !== undefined) {
-            if (!Array.isArray(variants)) {
-                throw new Error(`Wrong shortTable section for "${method}"`);
-            }
-            Object.keys(values).forEach((name) => {
-                const value = values[name];
-                [true, false].forEach((isRequired) => {
-                    let result;
-                    let defaultResult;
-                    let done = false;
-                    for (let i = 0; i < variants.length; i += 1) {
-                        const variant = variants[i];
-                        const {args} = variant;
-                        if (args !== undefined) {
-                            if (!Array.isArray(args)) {
-                                throw new Error(`Wrong property "args" in shortTable section for "${method}": ${args}`);
-                            }
-                            if (args.some((arg) => arg[0] === name && arg[1] === isRequired)) {
-                                result = variant.result;
-                                done = true;
-                                break;
-                            }
-                        }
-                        else {
-                            defaultResult = variant.result;
-                        }
-                    }
-                    table.push([method, value, isRequired, done ? result : defaultResult]);
-                });
-            });
-        }
-        return table;
-    }, []);
-};
-
-
-
 describe('Module "TypeAudit"', () => {
     it('Содержит все нужные и не содержит посторонние методы', () => {
-        const methods = _getOwnMethods(TypeAudit);
+        const methods = Utils.getOwnMethods(TypeAudit);
         expect(
             methods.length
         ).toBe(
@@ -129,7 +61,7 @@ describe('Module "TypeAudit"', () => {
 
     it('Содержит все нужные и не содержит посторонние свойства', () => {
         const PROPS = ['is', 'prop'];
-        const properties = _getOwnProperties(TypeAudit);
+        const properties = Utils.getOwnProperties(TypeAudit);
         expect(
             properties.length
         ).toBe(
@@ -154,7 +86,7 @@ describe('Module "TypeAudit"', () => {
     });
 
     it('Свойство "prop" содержит все нужные и не содержит посторонние методы', () => {
-        const methods = _getOwnMethods(TypeAudit.prop);
+        const methods = Utils.getOwnMethods(TypeAudit.prop);
         expect(
             methods.length
         ).toBe(
@@ -166,7 +98,7 @@ describe('Module "TypeAudit"', () => {
     });
 
     it('Свойство "prop" содержит все нужные и не содержит посторонние свойства', () => {
-        const properties = _getOwnProperties(TypeAudit.prop);
+        const properties = Utils.getOwnProperties(TypeAudit.prop);
         expect(
             properties.length
         ).toBe(
@@ -174,14 +106,14 @@ describe('Module "TypeAudit"', () => {
         );
     });
 
-    it.each(_expandTableSimple({
+    it.each(Utils.expandTable({
         function:[
             {
                 args:[
-                    ['func', true],
-                    ['func', false],
-                    ['null', false],
-                    ['undef', false]
+                    ['func', 'true'],
+                    ['func', 'false'],
+                    ['null', 'false'],
+                    ['undef', 'false']
                 ],
                 result:undefined},
             {result:new TypeError()}
@@ -189,12 +121,12 @@ describe('Module "TypeAudit"', () => {
         object:[
             {
                 args:[
-                    ['obj-1', true],
-                    ['obj-1', false],
-                    ['obj-2', true],
-                    ['obj-2', false],
-                    ['null', false],
-                    ['undef', false]
+                    ['obj-1', 'true'],
+                    ['obj-1', 'false'],
+                    ['obj-2', 'true'],
+                    ['obj-2', 'false'],
+                    ['null', 'false'],
+                    ['undef', 'false']
                 ],
                 result:undefined},
             {result:new TypeError()}
@@ -202,12 +134,12 @@ describe('Module "TypeAudit"', () => {
         array:[
             {
                 args:[
-                    ['arr-1', true],
-                    ['arr-1', false],
-                    ['arr-2', true],
-                    ['arr-2', false],
-                    ['null', false],
-                    ['undef', false]
+                    ['arr-1', 'true'],
+                    ['arr-1', 'false'],
+                    ['arr-2', 'true'],
+                    ['arr-2', 'false'],
+                    ['null', 'false'],
+                    ['undef', 'false']
                 ],
                 result:undefined},
             {result:new TypeError()}
@@ -215,10 +147,10 @@ describe('Module "TypeAudit"', () => {
         notEmptyArray:[
             {
                 args:[
-                    ['arr-2', true],
-                    ['arr-2', false],
-                    ['null', false],
-                    ['undef', false]
+                    ['arr-2', 'true'],
+                    ['arr-2', 'false'],
+                    ['null', 'false'],
+                    ['undef', 'false']
                 ],
                 result:undefined},
             {result:new TypeError()}
@@ -226,12 +158,12 @@ describe('Module "TypeAudit"', () => {
         string:[
             {
                 args:[
-                    ['str-1', true],
-                    ['str-1', false],
-                    ['str-2', true],
-                    ['str-2', false],
-                    ['null', false],
-                    ['undef', false]
+                    ['str-1', 'true'],
+                    ['str-1', 'false'],
+                    ['str-2', 'true'],
+                    ['str-2', 'false'],
+                    ['null', 'false'],
+                    ['undef', 'false']
                 ],
                 result:undefined},
             {result:new TypeError()}
@@ -239,10 +171,10 @@ describe('Module "TypeAudit"', () => {
         notEmptyString:[
             {
                 args:[
-                    ['str-2', true],
-                    ['str-2', false],
-                    ['null', false],
-                    ['undef', false]
+                    ['str-2', 'true'],
+                    ['str-2', 'false'],
+                    ['null', 'false'],
+                    ['undef', 'false']
                 ],
                 result:undefined},
             {result:new TypeError()}
@@ -250,18 +182,18 @@ describe('Module "TypeAudit"', () => {
         number:[
             {
                 args:[
-                    ['int-1', true],
-                    ['int-1', false],
-                    ['int-2', true],
-                    ['int-2', false],
-                    ['int-3', true],
-                    ['int-3', false],
-                    ['num-1', true],
-                    ['num-1', false],
-                    ['num-2', true],
-                    ['num-2', false],
-                    ['null', false],
-                    ['undef', false]
+                    ['int-1', 'true'],
+                    ['int-1', 'false'],
+                    ['int-2', 'true'],
+                    ['int-2', 'false'],
+                    ['int-3', 'true'],
+                    ['int-3', 'false'],
+                    ['num-1', 'true'],
+                    ['num-1', 'false'],
+                    ['num-2', 'true'],
+                    ['num-2', 'false'],
+                    ['null', 'false'],
+                    ['undef', 'false']
                 ],
                 result:undefined},
             {result:new TypeError()}
@@ -269,12 +201,12 @@ describe('Module "TypeAudit"', () => {
         positiveNumber:[
             {
                 args:[
-                    ['int-2', true],
-                    ['int-2', false],
-                    ['num-1', true],
-                    ['num-1', false],
-                    ['null', false],
-                    ['undef', false]
+                    ['int-2', 'true'],
+                    ['int-2', 'false'],
+                    ['num-1', 'true'],
+                    ['num-1', 'false'],
+                    ['null', 'false'],
+                    ['undef', 'false']
                 ],
                 result:undefined},
             {result:new TypeError()}
@@ -282,14 +214,14 @@ describe('Module "TypeAudit"', () => {
         notNegativeNumber:[
             {
                 args:[
-                    ['int-1', true],
-                    ['int-1', false],
-                    ['int-2', true],
-                    ['int-2', false],
-                    ['num-1', true],
-                    ['num-1', false],
-                    ['null', false],
-                    ['undef', false]
+                    ['int-1', 'true'],
+                    ['int-1', 'false'],
+                    ['int-2', 'true'],
+                    ['int-2', 'false'],
+                    ['num-1', 'true'],
+                    ['num-1', 'false'],
+                    ['null', 'false'],
+                    ['undef', 'false']
                 ],
                 result:undefined},
             {result:new TypeError()}
@@ -297,14 +229,14 @@ describe('Module "TypeAudit"', () => {
         integer:[
             {
                 args:[
-                    ['int-1', true],
-                    ['int-1', false],
-                    ['int-2', true],
-                    ['int-2', false],
-                    ['int-3', true],
-                    ['int-3', false],
-                    ['null', false],
-                    ['undef', false]
+                    ['int-1', 'true'],
+                    ['int-1', 'false'],
+                    ['int-2', 'true'],
+                    ['int-2', 'false'],
+                    ['int-3', 'true'],
+                    ['int-3', 'false'],
+                    ['null', 'false'],
+                    ['undef', 'false']
                 ],
                 result:undefined},
             {result:new TypeError()}
@@ -312,10 +244,10 @@ describe('Module "TypeAudit"', () => {
         positiveInteger:[
             {
                 args:[
-                    ['int-2', true],
-                    ['int-2', false],
-                    ['null', false],
-                    ['undef', false]
+                    ['int-2', 'true'],
+                    ['int-2', 'false'],
+                    ['null', 'false'],
+                    ['undef', 'false']
                 ],
                 result:undefined},
             {result:new TypeError()}
@@ -323,12 +255,12 @@ describe('Module "TypeAudit"', () => {
         notNegativeInteger:[
             {
                 args:[
-                    ['int-1', true],
-                    ['int-1', false],
-                    ['int-2', true],
-                    ['int-2', false],
-                    ['null', false],
-                    ['undef', false]
+                    ['int-1', 'true'],
+                    ['int-1', 'false'],
+                    ['int-2', 'true'],
+                    ['int-2', 'false'],
+                    ['null', 'false'],
+                    ['undef', 'false']
                 ],
                 result:undefined},
             {result:new TypeError()}
@@ -336,28 +268,30 @@ describe('Module "TypeAudit"', () => {
         boolean:[
             {
                 args:[
-                    ['bool-1', true],
-                    ['bool-1', false],
-                    ['bool-2', true],
-                    ['bool-2', false],
-                    ['null', false],
-                    ['undef', false]
+                    ['true', 'true'],
+                    ['true', 'false'],
+                    ['false', 'true'],
+                    ['false', 'false'],
+                    ['null', 'false'],
+                    ['undef', 'false']
                 ],
                 result:undefined},
             {result:new TypeError()}
         ]
-    }, SIMPLE_METHODS, VALUES))('Метод "%s": (%O, %s)', (method, value, isRequired, result) => {
-        const call = () => TypeAudit[method](value, 'value:test', isRequired);
-        if (result instanceof Error) {
-            const outcome = expect(call);
-            outcome.toThrow(result.constructor);
-            // TODO: Если TYPE_NAMES будут перенесены в is.js, то нужно использовать здесь для замены ".+"
-            outcome.toThrow(new RegExp(`^Value "test" ${isRequired ? 'must be' : 'can be only'} .+: `));
+    }, SIMPLE_METHODS, VALUES, Utils.pick(VALUES, ['true', 'false'])))(
+        'Метод "%s": (%O, %s)',
+        (method, value, isRequired, result) => {
+            const call = () => TypeAudit[method](value, 'value:test', isRequired);
+            if (result instanceof Error) {
+                const outcome = expect(call);
+                outcome.toThrow(result.constructor);
+                outcome.toThrow(new RegExp(`^Value "test" ${isRequired ? 'must be' : 'can be only'} .+: `));
+            }
+            else {
+                expect(call()).toBe(result);
+            }
         }
-        else {
-            expect(call()).toBe(result);
-        }
-    });
+    );
 
     it.todo('Проверки типизированных методов');
 });
