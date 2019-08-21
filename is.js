@@ -70,9 +70,11 @@ const Is = {
         if (!isClass && !(argType === 'string' && itemType.length !== 0)) {
             throw new TypeError(`Wrong argument "itemType": ${itemType}`);
         }
-        return (!isRequired && value == null) || (
-            Array.isArray(value)
-            && value.every(isClass ? (item) => item instanceof itemType : (item) => typeof item === itemType)
+        return (!isRequired && value == null) || (Array.isArray(value) && value.every(isClass
+            ? (item) => item instanceof itemType
+            : (itemType === 'object'
+                ? (item) => item !== null && typeof item === itemType
+                : (item) => typeof item === itemType))
         );
     },
 
