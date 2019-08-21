@@ -139,8 +139,7 @@ describe('Module "TypeAudit"', () => {
         function:[
             {
                 args:[
-                    ['func', 'true'],
-                    ['func', 'false'],
+                    ['func', null],
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
@@ -150,14 +149,10 @@ describe('Module "TypeAudit"', () => {
         object:[
             {
                 args:[
-                    ['obj-1', 'true'],
-                    ['obj-1', 'false'],
-                    ['obj-2', 'true'],
-                    ['obj-2', 'false'],
-                    ['obj-c1', 'true'],
-                    ['obj-c1', 'false'],
-                    ['obj-c2', 'true'],
-                    ['obj-c2', 'false'],
+                    ['obj-1', null],
+                    ['obj-2', null],
+                    ['obj-c1', null],
+                    ['obj-c2', null],
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
@@ -167,10 +162,8 @@ describe('Module "TypeAudit"', () => {
         array:[
             {
                 args:[
-                    ['arr-void', 'true'],
-                    ['arr-void', 'false'],
-                    ['arr-num', 'true'],
-                    ['arr-num', 'false'],
+                    ['arr-void', null],
+                    ['arr-num', null],
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
@@ -180,8 +173,7 @@ describe('Module "TypeAudit"', () => {
         notEmptyArray:[
             {
                 args:[
-                    ['arr-num', 'true'],
-                    ['arr-num', 'false'],
+                    ['arr-num', null],
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
@@ -191,10 +183,8 @@ describe('Module "TypeAudit"', () => {
         string:[
             {
                 args:[
-                    ['str-1', 'true'],
-                    ['str-1', 'false'],
-                    ['str-2', 'true'],
-                    ['str-2', 'false'],
+                    ['str-1', null],
+                    ['str-2', null],
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
@@ -204,8 +194,7 @@ describe('Module "TypeAudit"', () => {
         notEmptyString:[
             {
                 args:[
-                    ['str-2', 'true'],
-                    ['str-2', 'false'],
+                    ['str-2', null],
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
@@ -215,16 +204,11 @@ describe('Module "TypeAudit"', () => {
         number:[
             {
                 args:[
-                    ['int-1', 'true'],
-                    ['int-1', 'false'],
-                    ['int-2', 'true'],
-                    ['int-2', 'false'],
-                    ['int-3', 'true'],
-                    ['int-3', 'false'],
-                    ['num-1', 'true'],
-                    ['num-1', 'false'],
-                    ['num-2', 'true'],
-                    ['num-2', 'false'],
+                    ['int-1', null],
+                    ['int-2', null],
+                    ['int-3', null],
+                    ['num-1', null],
+                    ['num-2', null],
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
@@ -234,10 +218,8 @@ describe('Module "TypeAudit"', () => {
         positiveNumber:[
             {
                 args:[
-                    ['int-2', 'true'],
-                    ['int-2', 'false'],
-                    ['num-1', 'true'],
-                    ['num-1', 'false'],
+                    ['int-2', null],
+                    ['num-1', null],
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
@@ -247,12 +229,9 @@ describe('Module "TypeAudit"', () => {
         notNegativeNumber:[
             {
                 args:[
-                    ['int-1', 'true'],
-                    ['int-1', 'false'],
-                    ['int-2', 'true'],
-                    ['int-2', 'false'],
-                    ['num-1', 'true'],
-                    ['num-1', 'false'],
+                    ['int-1', null],
+                    ['int-2', null],
+                    ['num-1', null],
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
@@ -262,12 +241,9 @@ describe('Module "TypeAudit"', () => {
         integer:[
             {
                 args:[
-                    ['int-1', 'true'],
-                    ['int-1', 'false'],
-                    ['int-2', 'true'],
-                    ['int-2', 'false'],
-                    ['int-3', 'true'],
-                    ['int-3', 'false'],
+                    ['int-1', null],
+                    ['int-2', null],
+                    ['int-3', null],
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
@@ -277,8 +253,7 @@ describe('Module "TypeAudit"', () => {
         positiveInteger:[
             {
                 args:[
-                    ['int-2', 'true'],
-                    ['int-2', 'false'],
+                    ['int-2', null],
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
@@ -288,10 +263,8 @@ describe('Module "TypeAudit"', () => {
         notNegativeInteger:[
             {
                 args:[
-                    ['int-1', 'true'],
-                    ['int-1', 'false'],
-                    ['int-2', 'true'],
-                    ['int-2', 'false'],
+                    ['int-1', null],
+                    ['int-2', null],
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
@@ -301,10 +274,8 @@ describe('Module "TypeAudit"', () => {
         boolean:[
             {
                 args:[
-                    ['true', 'true'],
-                    ['true', 'false'],
-                    ['false', 'true'],
-                    ['false', 'false'],
+                    ['true', null],
+                    ['false', null],
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
@@ -330,10 +301,8 @@ describe('Module "TypeAudit"', () => {
         instanceOf:[
             {
                 args:[
-                    ['obj-c1', 'cls-1', 'true'],
-                    ['obj-c1', 'cls-1', 'false'],
-                    ['obj-c2', 'cls-2', 'true'],
-                    ['obj-c2', 'cls-2', 'false'],
+                    ['obj-c1', 'cls-1', null],
+                    ['obj-c2', 'cls-2', null],
                     ['null', 'cls-1', 'false'],
                     ['null', 'cls-2', 'false'],
                     ['undef', 'cls-1', 'false'],
@@ -361,56 +330,24 @@ describe('Module "TypeAudit"', () => {
         arrayOf:[
             {
                 args:[
-                    ['arr-void', 'func', 'true'],
-                    ['arr-void', 'func', 'false'],
-                    ['arr-void', 'arr', 'true'],
-                    ['arr-void', 'arr', 'false'],
-                    ['arr-void', 'obj', 'true'],
-                    ['arr-void', 'obj', 'false'],
-                    ['arr-void', 'str', 'true'],
-                    ['arr-void', 'str', 'false'],
-                    ['arr-void', 'num', 'true'],
-                    ['arr-void', 'num', 'false'],
-                    ['arr-void', 'bool', 'true'],
-                    ['arr-void', 'bool', 'false'],
-                    ['arr-void', 'cls-1', 'true'],
-                    ['arr-void', 'cls-1', 'false'],
-                    ['arr-void', 'cls-2', 'true'],
-                    ['arr-void', 'cls-2', 'false'],
-                    ['arr-func', 'func', 'true'],
-                    ['arr-func', 'func', 'false'],
-                    ['arr-obj', 'obj', 'true'],
-                    ['arr-obj', 'obj', 'false'],
-                    ['arr-cls-1', 'obj', 'true'],
-                    ['arr-cls-1', 'obj', 'false'],
-                    ['arr-cls-2', 'obj', 'true'],
-                    ['arr-cls-2', 'obj', 'false'],
-                    ['arr-str', 'str', 'true'],
-                    ['arr-str', 'str', 'false'],
-                    ['arr-num', 'num', 'true'],
-                    ['arr-num', 'num', 'false'],
-                    ['arr-bool', 'bool', 'true'],
-                    ['arr-bool', 'bool', 'false'],
-                    ['arr-cls-1', 'cls-1', 'true'],
-                    ['arr-cls-1', 'cls-1', 'false'],
-                    ['arr-cls-2', 'cls-2', 'true'],
-                    ['arr-cls-2', 'cls-2', 'false'],
-                    ['null', 'func', 'false'],
-                    ['null', 'arr', 'false'],
-                    ['null', 'obj', 'false'],
-                    ['null', 'str', 'false'],
-                    ['null', 'num', 'false'],
-                    ['null', 'bool', 'false'],
-                    ['null', 'cls-1', 'false'],
-                    ['null', 'cls-2', 'false'],
-                    ['undef', 'func', 'false'],
-                    ['undef', 'arr', 'false'],
-                    ['undef', 'obj', 'false'],
-                    ['undef', 'str', 'false'],
-                    ['undef', 'num', 'false'],
-                    ['undef', 'bool', 'false'],
-                    ['undef', 'cls-1', 'false'],
-                    ['undef', 'cls-2', 'false']
+                    ['arr-void', 'func', null],
+                    ['arr-void', 'obj', null],
+                    ['arr-void', 'str', null],
+                    ['arr-void', 'num', null],
+                    ['arr-void', 'bool', null],
+                    ['arr-void', 'cls-1', null],
+                    ['arr-void', 'cls-2', null],
+                    ['arr-func', 'func', null],
+                    ['arr-obj', 'obj', null],
+                    ['arr-cls-1', 'obj', null],
+                    ['arr-cls-2', 'obj', null],
+                    ['arr-str', 'str', null],
+                    ['arr-num', 'num', null],
+                    ['arr-bool', 'bool', null],
+                    ['arr-cls-1', 'cls-1', null],
+                    ['arr-cls-2', 'cls-2', null],
+                    ['null', null, 'false'],
+                    ['undef', null, 'false']
                 ],
                 result:undefined},
             {result:new TypeError()}
