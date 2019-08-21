@@ -77,11 +77,13 @@ const _select = (list, keys) => keys.map((item, key) => list[key][item]);
 
 /**
  * @private
- * @param {Array} arr1
- * @param {Array} arr2
+ * @param {Array} patterns
+ * @param {Array} keys
  * @return {boolean}
  */
-const _isEqualArrays = (arr1, arr2) => arr1.length === arr2.length && arr1.every((item, i) => item === arr2[i]);
+const _isRelevantKeys = (patterns, keys) => patterns.length === keys.length && patterns.every(
+    (pattern, i) => pattern === null || pattern === keys[i]
+);
 
 /**
  * @private
@@ -101,7 +103,7 @@ const _getResult = (variants, keys, method) => {
             if (!Array.isArray(args)) {
                 throw new Error(`Wrong property "args" in shortTable section for "${method}": ${args}`);
             }
-            if (args.some((item) => _isEqualArrays(keys, item))) {
+            if (args.some((item) => _isRelevantKeys(item, keys))) {
                 return result;
             }
         }
