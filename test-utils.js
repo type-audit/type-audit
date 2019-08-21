@@ -69,7 +69,7 @@ const _makeIndexes = (lengths, index) => {
 
 /**
  * @private
- * @param {Array<object|Array>} list
+ * @param {Array<object|Array>|object<object|Array>} list
  * @param {Array<number|string>} keys
  * @return {Array}
  */
