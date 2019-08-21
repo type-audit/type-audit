@@ -28,10 +28,20 @@ const TYPED_METHODS = [
 class TestClass1 {}
 class TestClass2 {}
 
+const TYPES = {
+    func: 'function',
+    obj: 'object',
+    str: 'string',
+    num: 'number',
+    bool: 'boolean',
+    'cls-1': TestClass1,
+    'cls-2': TestClass2
+};
+
 const VALUES = {
     func: () => {},
-    'arr-1': [],
-    'arr-2': [123],
+    'arr-void': [],
+    'arr-num': [0, 123, -123, 0.123, -0.123],
     'obj-1': {},
     'obj-2': {prop:'123'},
     'obj-c1': new TestClass1(),
@@ -47,6 +57,20 @@ const VALUES = {
     false: false,
     null: null,
     undef: undefined
+};
+
+const ARRAY_VALUES = {
+    // 'arr-void' contains in VALUES
+    'arr-func': [VALUES.func],
+    'arr-obj': [VALUES['obj-1'], VALUES['obj-2'], VALUES['obj-c1'], VALUES['obj-c2']],
+    'arr-str': [VALUES['str-1'], VALUES['str-2']],
+    // 'arr-num' contains in VALUES
+    'arr-bool': [VALUES.true, VALUES.false],
+    'arr-cls-1': [VALUES['obj-c1']],
+    'arr-cls-2': [VALUES['obj-c2']],
+    'arr-mixed': [VALUES['int-1'], VALUES['str-1'], VALUES['obj-1']],
+    'arr-null': [VALUES.null],
+    'arr-undef': [VALUES.undef]
 };
 
 
@@ -143,10 +167,10 @@ describe('Module "TypeAudit"', () => {
         array:[
             {
                 args:[
-                    ['arr-1', 'true'],
-                    ['arr-1', 'false'],
-                    ['arr-2', 'true'],
-                    ['arr-2', 'false'],
+                    ['arr-void', 'true'],
+                    ['arr-void', 'false'],
+                    ['arr-num', 'true'],
+                    ['arr-num', 'false'],
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
@@ -156,8 +180,8 @@ describe('Module "TypeAudit"', () => {
         notEmptyArray:[
             {
                 args:[
-                    ['arr-2', 'true'],
-                    ['arr-2', 'false'],
+                    ['arr-num', 'true'],
+                    ['arr-num', 'false'],
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
@@ -333,5 +357,76 @@ describe('Module "TypeAudit"', () => {
         }
     );
 
-    it.todo('Проверки типизированных методов');
+    it.each(Utils.expandTable({
+        arrayOf:[
+            {
+                args:[
+                    ['arr-void', 'func', 'true'],
+                    ['arr-void', 'func', 'false'],
+                    ['arr-void', 'arr', 'true'],
+                    ['arr-void', 'arr', 'false'],
+                    ['arr-void', 'obj', 'true'],
+                    ['arr-void', 'obj', 'false'],
+                    ['arr-void', 'str', 'true'],
+                    ['arr-void', 'str', 'false'],
+                    ['arr-void', 'num', 'true'],
+                    ['arr-void', 'num', 'false'],
+                    ['arr-void', 'bool', 'true'],
+                    ['arr-void', 'bool', 'false'],
+                    ['arr-void', 'cls-1', 'true'],
+                    ['arr-void', 'cls-1', 'false'],
+                    ['arr-void', 'cls-2', 'true'],
+                    ['arr-void', 'cls-2', 'false'],
+                    ['arr-func', 'func', 'true'],
+                    ['arr-func', 'func', 'false'],
+                    ['arr-obj', 'obj', 'true'],
+                    ['arr-obj', 'obj', 'false'],
+                    ['arr-cls-1', 'obj', 'true'],
+                    ['arr-cls-1', 'obj', 'false'],
+                    ['arr-cls-2', 'obj', 'true'],
+                    ['arr-cls-2', 'obj', 'false'],
+                    ['arr-str', 'str', 'true'],
+                    ['arr-str', 'str', 'false'],
+                    ['arr-num', 'num', 'true'],
+                    ['arr-num', 'num', 'false'],
+                    ['arr-bool', 'bool', 'true'],
+                    ['arr-bool', 'bool', 'false'],
+                    ['arr-cls-1', 'cls-1', 'true'],
+                    ['arr-cls-1', 'cls-1', 'false'],
+                    ['arr-cls-2', 'cls-2', 'true'],
+                    ['arr-cls-2', 'cls-2', 'false'],
+                    ['null', 'func', 'false'],
+                    ['null', 'arr', 'false'],
+                    ['null', 'obj', 'false'],
+                    ['null', 'str', 'false'],
+                    ['null', 'num', 'false'],
+                    ['null', 'bool', 'false'],
+                    ['null', 'cls-1', 'false'],
+                    ['null', 'cls-2', 'false'],
+                    ['undef', 'func', 'false'],
+                    ['undef', 'arr', 'false'],
+                    ['undef', 'obj', 'false'],
+                    ['undef', 'str', 'false'],
+                    ['undef', 'num', 'false'],
+                    ['undef', 'bool', 'false'],
+                    ['undef', 'cls-1', 'false'],
+                    ['undef', 'cls-2', 'false']
+                ],
+                result:undefined},
+            {result:new TypeError()}
+        ]
+    }, TYPED_METHODS, {...VALUES, ...ARRAY_VALUES}, TYPES, Utils.pick(VALUES, ['true', 'false'])))(
+        'Метод "%s": (%O, %O, %s)',
+        (method, value, type, isRequired, result) => {
+            const call = () => TypeAudit[method](value, type, 'value:test', isRequired);
+            if (result instanceof Error) {
+                const outcome = expect(call);
+                outcome.toThrow(result.constructor);
+                outcome.toThrow(new RegExp(`^Value "test" ${isRequired ? 'must be' : 'can be only'} .+: `));
+            }
+            else {
+                expect(call()).toBe(result);
+            }
+        }
+    );
 });
