@@ -4,8 +4,8 @@
   "description": "Check the types of variables, arguments and other values where necessary",
   "main": "type-audit.js",
   "scripts": {
-    "lint": "eslint . --color --format stylish",
-    "lint:fix": "eslint . --color --format stylish --fix",
+    "lint": "eslint src --color --format stylish",
+    "lint:fix": "eslint src --color --format stylish --fix",
     "test": "jest",
     "test:detail": "jest --verbose"
   },
