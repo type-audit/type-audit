@@ -1,5 +1,6 @@
 import * as Utils from './test-utils';
-import Is from './is';
+import TypeAudit from '../src/type-audit';
+import Is from '../src/is';
 
 
 
@@ -74,9 +75,9 @@ const ARRAY_VALUES = {
 
 
 
-describe('Module "Is"', () => {
+describe('Module "TypeAudit"', () => {
     it('Содержит все нужные и не содержит посторонние методы', () => {
-        const methods = Utils.getOwnMethods(Is);
+        const methods = Utils.getOwnMethods(TypeAudit);
         expect(
             methods.length
         ).toBe(
@@ -88,7 +89,45 @@ describe('Module "Is"', () => {
     });
 
     it('Содержит все нужные и не содержит посторонние свойства', () => {
-        const properties = Utils.getOwnProperties(Is);
+        const PROPS = ['is', 'prop'];
+        const properties = Utils.getOwnProperties(TypeAudit);
+        expect(
+            properties.length
+        ).toBe(
+            PROPS.length
+        );
+        expect(
+            properties.every((name) => PROPS.indexOf(name) !== -1)
+        ).toBeTruthy();
+    });
+
+    it('Свойство "is" в норме', () => {
+        expect(
+            TypeAudit.is === Is
+        ).toBeTruthy();
+    });
+
+    it('Свойство "prop" в наличии', () => {
+        const {prop} = TypeAudit;
+        expect(
+            prop != null && typeof prop === 'object' && !Array.isArray(prop)
+        ).toBeTruthy();
+    });
+
+    it('Свойство "prop" содержит все нужные и не содержит посторонние методы', () => {
+        const methods = Utils.getOwnMethods(TypeAudit.prop);
+        expect(
+            methods.length
+        ).toBe(
+            SIMPLE_METHODS.length + TYPED_METHODS.length
+        );
+        expect(
+            methods.every((name) => SIMPLE_METHODS.indexOf(name) !== -1 || TYPED_METHODS.indexOf(name) !== -1)
+        ).toBeTruthy();
+    });
+
+    it('Свойство "prop" содержит все нужные и не содержит посторонние свойства', () => {
+        const properties = Utils.getOwnProperties(TypeAudit.prop);
         expect(
             properties.length
         ).toBe(
@@ -104,8 +143,8 @@ describe('Module "Is"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:true},
-            {result:false}
+                result:undefined},
+            {result:new TypeError()}
         ],
         object:[
             {
@@ -117,8 +156,8 @@ describe('Module "Is"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:true},
-            {result:false}
+                result:undefined},
+            {result:new TypeError()}
         ],
         array:[
             {
@@ -128,8 +167,8 @@ describe('Module "Is"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:true},
-            {result:false}
+                result:undefined},
+            {result:new TypeError()}
         ],
         notEmptyArray:[
             {
@@ -138,8 +177,8 @@ describe('Module "Is"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:true},
-            {result:false}
+                result:undefined},
+            {result:new TypeError()}
         ],
         string:[
             {
@@ -149,8 +188,8 @@ describe('Module "Is"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:true},
-            {result:false}
+                result:undefined},
+            {result:new TypeError()}
         ],
         notEmptyString:[
             {
@@ -159,8 +198,8 @@ describe('Module "Is"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:true},
-            {result:false}
+                result:undefined},
+            {result:new TypeError()}
         ],
         number:[
             {
@@ -173,8 +212,8 @@ describe('Module "Is"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:true},
-            {result:false}
+                result:undefined},
+            {result:new TypeError()}
         ],
         positiveNumber:[
             {
@@ -184,8 +223,8 @@ describe('Module "Is"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:true},
-            {result:false}
+                result:undefined},
+            {result:new TypeError()}
         ],
         notNegativeNumber:[
             {
@@ -196,8 +235,8 @@ describe('Module "Is"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:true},
-            {result:false}
+                result:undefined},
+            {result:new TypeError()}
         ],
         integer:[
             {
@@ -208,8 +247,8 @@ describe('Module "Is"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:true},
-            {result:false}
+                result:undefined},
+            {result:new TypeError()}
         ],
         positiveInteger:[
             {
@@ -218,8 +257,8 @@ describe('Module "Is"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:true},
-            {result:false}
+                result:undefined},
+            {result:new TypeError()}
         ],
         notNegativeInteger:[
             {
@@ -229,8 +268,8 @@ describe('Module "Is"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:true},
-            {result:false}
+                result:undefined},
+            {result:new TypeError()}
         ],
         boolean:[
             {
@@ -240,13 +279,21 @@ describe('Module "Is"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:true},
-            {result:false}
+                result:undefined},
+            {result:new TypeError()}
         ]
     }, SIMPLE_METHODS, VALUES, Utils.pick(VALUES, ['true', 'false'])))(
         'Метод "%s": (%O, %s)',
         (method, value, isRequired, result) => {
-            expect(Is[method](value, isRequired)).toBe(result);
+            const call = () => TypeAudit[method](value, 'value:test', isRequired);
+            if (result instanceof Error) {
+                const outcome = expect(call);
+                outcome.toThrow(result.constructor);
+                outcome.toThrow(new RegExp(`^Value "test" ${isRequired ? 'must be' : 'can be only'} .+: `));
+            }
+            else {
+                expect(call()).toBe(result);
+            }
         }
     );
 
@@ -261,13 +308,21 @@ describe('Module "Is"', () => {
                     ['undef', 'cls-1', 'false'],
                     ['undef', 'cls-2', 'false']
                 ],
-                result:true},
-            {result:false}
+                result:undefined},
+            {result:new TypeError()}
         ]
     }, TYPED_METHODS, VALUES, {'cls-1':TestClass1, 'cls-2':TestClass2}, Utils.pick(VALUES, ['true', 'false'])))(
         'Метод "%s": (%O, %O, %s)',
         (method, value, Clazz, isRequired, result) => {
-            expect(Is[method](value, Clazz, isRequired)).toBe(result);
+            const call = () => TypeAudit[method](value, Clazz, 'value:test', isRequired);
+            if (result instanceof Error) {
+                const outcome = expect(call);
+                outcome.toThrow(result.constructor);
+                outcome.toThrow(new RegExp(`^Value "test" ${isRequired ? 'must be' : 'can be only'} .+: `));
+            }
+            else {
+                expect(call()).toBe(result);
+            }
         }
     );
 
@@ -294,13 +349,21 @@ describe('Module "Is"', () => {
                     ['null', null, 'false'],
                     ['undef', null, 'false']
                 ],
-                result:true},
-            {result:false}
+                result:undefined},
+            {result:new TypeError()}
         ]
     }, TYPED_METHODS, {...VALUES, ...ARRAY_VALUES}, TYPES, Utils.pick(VALUES, ['true', 'false'])))(
         'Метод "%s": (%O, %O, %s)',
         (method, value, type, isRequired, result) => {
-            expect(Is[method](value, type, isRequired)).toBe(result);
+            const call = () => TypeAudit[method](value, type, 'value:test', isRequired);
+            if (result instanceof Error) {
+                const outcome = expect(call);
+                outcome.toThrow(result.constructor);
+                outcome.toThrow(new RegExp(`^Value "test" ${isRequired ? 'must be' : 'can be only'} .+: `));
+            }
+            else {
+                expect(call()).toBe(result);
+            }
         }
     );
 });
