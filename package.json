@@ -2,12 +2,18 @@
   "name": "type-audit",
   "version": "0.8.5",
   "description": "Check the types of variables, arguments and other values where necessary",
-  "main": "type-audit.js",
+  "main": "dist/type-audit.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "lint": "eslint src --color --format stylish",
     "lint:fix": "eslint src --color --format stylish --fix",
     "test": "jest",
-    "test:detail": "jest --verbose"
+    "test:detail": "jest --verbose",
+    "build": "babel src --out-dir dist --presets @babel/preset-env",
+    "prepublishOnly": "npm run build"
+
   },
   "author": "victoraspirin",
   "repository": {
@@ -24,6 +30,8 @@
   ],
   "license": "MIT",
   "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "babel-eslint": "^10.0.2",
     "babel-jest": "^24.9.0",
