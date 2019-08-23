@@ -1,4 +1,5 @@
 import * as Utils from './test-utils';
+import pick from 'lodash.pick';
 import {expandTable} from './jest-more-expand-table';
 import Is from '../src/is';
 
@@ -257,7 +258,7 @@ describe('Module "Is"', () => {
             },
             {result:false}
         ]
-    }, SIMPLE_METHODS, VALUES, Utils.pick(VALUES, ['true', 'false'])))(
+    }, SIMPLE_METHODS, VALUES, pick(VALUES, ['true', 'false'])))(
         'Метод "%s": (%O, %s)',
         (method, value, isRequired, result) => {
             expect(Is[method](value, isRequired)).toBe(result);
@@ -279,7 +280,7 @@ describe('Module "Is"', () => {
             },
             {result:false}
         ]
-    }, TYPED_METHODS, VALUES, {'cls-1':TestClass1, 'cls-2':TestClass2}, Utils.pick(VALUES, ['true', 'false'])))(
+    }, TYPED_METHODS, VALUES, pick(TYPES, ['cls-1', 'cls-2']), pick(VALUES, ['true', 'false'])))(
         'Метод "%s": (%O, %O, %s)',
         (method, value, Clazz, isRequired, result) => {
             expect(Is[method](value, Clazz, isRequired)).toBe(result);
@@ -313,7 +314,7 @@ describe('Module "Is"', () => {
             },
             {result:false}
         ]
-    }, TYPED_METHODS, {...VALUES, ...ARRAY_VALUES}, TYPES, Utils.pick(VALUES, ['true', 'false'])))(
+    }, TYPED_METHODS, {...VALUES, ...ARRAY_VALUES}, TYPES, pick(VALUES, ['true', 'false'])))(
         'Метод "%s": (%O, %O, %s)',
         (method, value, type, isRequired, result) => {
             expect(Is[method](value, type, isRequired)).toBe(result);

@@ -1,4 +1,5 @@
 import * as Utils from './test-utils';
+import pick from 'lodash.pick';
 import {expandTable} from './jest-more-expand-table';
 import TypeAudit from '../src/type-audit';
 import Is from '../src/is';
@@ -296,7 +297,7 @@ describe('Module "TypeAudit"', () => {
             },
             {result:new TypeError()}
         ]
-    }, SIMPLE_METHODS, VALUES, Utils.pick(VALUES, ['true', 'false'])))(
+    }, SIMPLE_METHODS, VALUES, pick(VALUES, ['true', 'false'])))(
         'Метод "%s": (%O, %s)',
         (method, value, isRequired, result) => {
             const call = () => TypeAudit[method](value, 'value:test', isRequired);
@@ -326,7 +327,7 @@ describe('Module "TypeAudit"', () => {
             },
             {result:new TypeError()}
         ]
-    }, TYPED_METHODS, VALUES, {'cls-1':TestClass1, 'cls-2':TestClass2}, Utils.pick(VALUES, ['true', 'false'])))(
+    }, TYPED_METHODS, VALUES, pick(TYPES, ['cls-1', 'cls-2']), pick(VALUES, ['true', 'false'])))(
         'Метод "%s": (%O, %O, %s)',
         (method, value, Clazz, isRequired, result) => {
             const call = () => TypeAudit[method](value, Clazz, 'value:test', isRequired);
@@ -368,7 +369,7 @@ describe('Module "TypeAudit"', () => {
             },
             {result:new TypeError()}
         ]
-    }, TYPED_METHODS, {...VALUES, ...ARRAY_VALUES}, TYPES, Utils.pick(VALUES, ['true', 'false'])))(
+    }, TYPED_METHODS, {...VALUES, ...ARRAY_VALUES}, TYPES, pick(VALUES, ['true', 'false'])))(
         'Метод "%s": (%O, %O, %s)',
         (method, value, type, isRequired, result) => {
             const call = () => TypeAudit[method](value, type, 'value:test', isRequired);
