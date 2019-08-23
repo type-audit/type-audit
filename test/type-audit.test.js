@@ -144,7 +144,8 @@ describe('Module "TypeAudit"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:undefined},
+                result:undefined
+            },
             {result:new TypeError()}
         ],
         object:[
@@ -157,7 +158,8 @@ describe('Module "TypeAudit"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:undefined},
+                result:undefined
+            },
             {result:new TypeError()}
         ],
         array:[
@@ -168,7 +170,8 @@ describe('Module "TypeAudit"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:undefined},
+                result:undefined
+            },
             {result:new TypeError()}
         ],
         notEmptyArray:[
@@ -178,7 +181,8 @@ describe('Module "TypeAudit"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:undefined},
+                result:undefined
+            },
             {result:new TypeError()}
         ],
         string:[
@@ -189,7 +193,8 @@ describe('Module "TypeAudit"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:undefined},
+                result:undefined
+            },
             {result:new TypeError()}
         ],
         notEmptyString:[
@@ -199,7 +204,8 @@ describe('Module "TypeAudit"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:undefined},
+                result:undefined
+            },
             {result:new TypeError()}
         ],
         number:[
@@ -213,7 +219,8 @@ describe('Module "TypeAudit"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:undefined},
+                result:undefined
+            },
             {result:new TypeError()}
         ],
         positiveNumber:[
@@ -224,7 +231,8 @@ describe('Module "TypeAudit"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:undefined},
+                result:undefined
+            },
             {result:new TypeError()}
         ],
         notNegativeNumber:[
@@ -236,7 +244,8 @@ describe('Module "TypeAudit"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:undefined},
+                result:undefined
+            },
             {result:new TypeError()}
         ],
         integer:[
@@ -248,7 +257,8 @@ describe('Module "TypeAudit"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:undefined},
+                result:undefined
+            },
             {result:new TypeError()}
         ],
         positiveInteger:[
@@ -258,7 +268,8 @@ describe('Module "TypeAudit"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:undefined},
+                result:undefined
+            },
             {result:new TypeError()}
         ],
         notNegativeInteger:[
@@ -269,7 +280,8 @@ describe('Module "TypeAudit"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:undefined},
+                result:undefined
+            },
             {result:new TypeError()}
         ],
         boolean:[
@@ -280,7 +292,8 @@ describe('Module "TypeAudit"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:undefined},
+                result:undefined
+            },
             {result:new TypeError()}
         ]
     }, SIMPLE_METHODS, VALUES, Utils.pick(VALUES, ['true', 'false'])))(
@@ -309,7 +322,8 @@ describe('Module "TypeAudit"', () => {
                     ['undef', 'cls-1', 'false'],
                     ['undef', 'cls-2', 'false']
                 ],
-                result:undefined},
+                result:undefined
+            },
             {result:new TypeError()}
         ]
     }, TYPED_METHODS, VALUES, {'cls-1':TestClass1, 'cls-2':TestClass2}, Utils.pick(VALUES, ['true', 'false'])))(
@@ -350,7 +364,8 @@ describe('Module "TypeAudit"', () => {
                     ['null', null, 'false'],
                     ['undef', null, 'false']
                 ],
-                result:undefined},
+                result:undefined
+            },
             {result:new TypeError()}
         ]
     }, TYPED_METHODS, {...VALUES, ...ARRAY_VALUES}, TYPES, Utils.pick(VALUES, ['true', 'false'])))(

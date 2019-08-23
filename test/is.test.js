@@ -105,7 +105,8 @@ describe('Module "Is"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:true},
+                result:true
+            },
             {result:false}
         ],
         object:[
@@ -118,7 +119,8 @@ describe('Module "Is"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:true},
+                result:true
+            },
             {result:false}
         ],
         array:[
@@ -129,7 +131,8 @@ describe('Module "Is"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:true},
+                result:true
+            },
             {result:false}
         ],
         notEmptyArray:[
@@ -139,7 +142,8 @@ describe('Module "Is"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:true},
+                result:true
+            },
             {result:false}
         ],
         string:[
@@ -150,7 +154,8 @@ describe('Module "Is"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:true},
+                result:true
+            },
             {result:false}
         ],
         notEmptyString:[
@@ -160,7 +165,8 @@ describe('Module "Is"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:true},
+                result:true
+            },
             {result:false}
         ],
         number:[
@@ -174,7 +180,8 @@ describe('Module "Is"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:true},
+                result:true
+            },
             {result:false}
         ],
         positiveNumber:[
@@ -185,7 +192,8 @@ describe('Module "Is"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:true},
+                result:true
+            },
             {result:false}
         ],
         notNegativeNumber:[
@@ -197,7 +205,8 @@ describe('Module "Is"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:true},
+                result:true
+            },
             {result:false}
         ],
         integer:[
@@ -209,7 +218,8 @@ describe('Module "Is"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:true},
+                result:true
+            },
             {result:false}
         ],
         positiveInteger:[
@@ -219,7 +229,8 @@ describe('Module "Is"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:true},
+                result:true
+            },
             {result:false}
         ],
         notNegativeInteger:[
@@ -230,7 +241,8 @@ describe('Module "Is"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:true},
+                result:true
+            },
             {result:false}
         ],
         boolean:[
@@ -241,7 +253,8 @@ describe('Module "Is"', () => {
                     ['null', 'false'],
                     ['undef', 'false']
                 ],
-                result:true},
+                result:true
+            },
             {result:false}
         ]
     }, SIMPLE_METHODS, VALUES, Utils.pick(VALUES, ['true', 'false'])))(
@@ -262,7 +275,8 @@ describe('Module "Is"', () => {
                     ['undef', 'cls-1', 'false'],
                     ['undef', 'cls-2', 'false']
                 ],
-                result:true},
+                result:true
+            },
             {result:false}
         ]
     }, TYPED_METHODS, VALUES, {'cls-1':TestClass1, 'cls-2':TestClass2}, Utils.pick(VALUES, ['true', 'false'])))(
@@ -295,7 +309,8 @@ describe('Module "Is"', () => {
                     ['null', null, 'false'],
                     ['undef', null, 'false']
                 ],
-                result:true},
+                result:true
+            },
             {result:false}
         ]
     }, TYPED_METHODS, {...VALUES, ...ARRAY_VALUES}, TYPES, Utils.pick(VALUES, ['true', 'false'])))(
