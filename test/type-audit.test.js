@@ -348,7 +348,7 @@ describe('Module "TypeAudit"', () => {
             {result:new TypeError()}
         ]
     }, TYPED_METHODS, pick(VALUES, ['str-1']), omit(VALUES, ['func']), pick(VALUES, ['true'])))(
-        'Method "%s" throws error at wrong type: (%O, %O, %s)',
+        'Method "%s" throws error at wrong value class: (%O, %O, %s)',
         (method, value, Clazz, isRequired, result) => {
             const call = () => Is[method](value, Clazz, isRequired);
             if (result instanceof Error) {
@@ -397,6 +397,25 @@ describe('Module "TypeAudit"', () => {
                 const outcome = expect(call);
                 outcome.toThrow(result.constructor);
                 outcome.toThrow(new RegExp(`^Value "test" ${isRequired ? 'must be' : 'can be only'} .+: `));
+            }
+            else {
+                expect(call()).toBe(result);
+            }
+        }
+    );
+
+    it.each(expandTable({
+        arrayOf:[
+            {result:new TypeError()}
+        ]
+    }, TYPED_METHODS, pick(VALUES, ['str-1']), omit(VALUES, ['func', 'str-2']), pick(VALUES, ['true'])))(
+        'Method "%s" throws error at wrong item type: (%O, %O, %s)',
+        (method, value, type, isRequired, result) => {
+            const call = () => Is[method](value, type, isRequired);
+            if (result instanceof Error) {
+                const outcome = expect(call);
+                outcome.toThrow(result.constructor);
+                outcome.toThrow(new RegExp('^Wrong argument "itemType": '));
             }
             else {
                 expect(call()).toBe(result);
