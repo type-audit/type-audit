@@ -1,4 +1,5 @@
 import * as Utils from './test-utils';
+import {expandTable} from './jest-more-expand-table';
 import Is from '../src/is';
 
 
@@ -96,7 +97,7 @@ describe('Module "Is"', () => {
         );
     });
 
-    it.each(Utils.expandTable({
+    it.each(expandTable({
         function:[
             {
                 args:[
@@ -250,7 +251,7 @@ describe('Module "Is"', () => {
         }
     );
 
-    it.each(Utils.expandTable({
+    it.each(expandTable({
         instanceOf:[
             {
                 args:[
@@ -271,7 +272,7 @@ describe('Module "Is"', () => {
         }
     );
 
-    it.each(Utils.expandTable({
+    it.each(expandTable({
         arrayOf:[
             {
                 args:[
