@@ -1,5 +1,6 @@
 import * as Utils from './test-utils';
 import pick from 'lodash.pick';
+import omit from 'lodash.omit';
 import {expandTable} from './jest-more-expand-table';
 import Is from '../src/is';
 
@@ -284,6 +285,25 @@ describe('Module "Is"', () => {
         'Method "%s" returns expected result: (%O, %O, %s)',
         (method, value, Clazz, isRequired, result) => {
             expect(Is[method](value, Clazz, isRequired)).toBe(result);
+        }
+    );
+
+    it.each(expandTable({
+        instanceOf:[
+            {result:new TypeError()}
+        ]
+    }, TYPED_METHODS, pick(VALUES, ['str-1']), omit(VALUES, ['func']), pick(VALUES, ['true'])))(
+        'Method "%s" throws error at wrong type: (%O, %O, %s)',
+        (method, value, Clazz, isRequired, result) => {
+            const call = () => Is[method](value, Clazz, isRequired);
+            if (result instanceof Error) {
+                const outcome = expect(call);
+                outcome.toThrow(result.constructor);
+                outcome.toThrow(new RegExp('^Wrong argument "valueClass": '));
+            }
+            else {
+                expect(call()).toBe(result);
+            }
         }
     );
 
