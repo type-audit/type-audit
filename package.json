@@ -12,6 +12,7 @@
     "lint:fix": "eslint src --color --format stylish --fix",
     "test": "jest",
     "test:detail": "jest --verbose",
+    "test:cover": "jest --coverage",
     "build": "babel src --out-dir dist --presets @babel/preset-env",
     "prepublishOnly": "npm run build"
 
