@@ -301,17 +301,29 @@ describe('Module "TypeAudit"', () => {
     }, SIMPLE_METHODS, VALUES, pick(VALUES, ['true', 'false'])))(
         'Method "%s" returns expected result: (%O, %s)',
         (method, value, isRequired, result) => {
-            const call = () => TypeAudit[method](value, 'value:test', isRequired);
+            const call = () => TypeAudit[method](value, 'arg:test', isRequired);
             if (result instanceof Error) {
                 const outcome = expect(call);
                 outcome.toThrow(result.constructor);
-                outcome.toThrow(new RegExp(`^Value "test" ${isRequired ? 'must be' : 'can be only'} .+: `));
+                outcome.toThrow(new RegExp(`^Argument "test" ${isRequired ? 'must be' : 'can be only'} .+: `));
             }
             else {
                 expect(call()).toBe(result);
             }
         }
     );
+
+    it('Thrown error has correct message (if functional naming)', () => {
+        const outcome = expect(() => TypeAudit.string(VALUES['num-1'], () => 'Input data', VALUES['true']));
+        outcome.toThrow(TypeError);
+        outcome.toThrow(new RegExp(`^Input data must be .+: `));
+    });
+
+    it('Thrown error has correct message (if wrong naming)', () => {
+        const outcome = expect(() => TypeAudit.string(VALUES['num-1'], VALUES['num-1'], VALUES['true']));
+        outcome.toThrow(TypeError);
+        outcome.toThrow(new RegExp('^Wrong argument "naming": '));
+    });
 
     it.each(expandTable({
         instanceOf:[
@@ -392,11 +404,11 @@ describe('Module "TypeAudit"', () => {
     }, TYPED_METHODS, {...VALUES, ...ARRAY_VALUES}, TYPES, pick(VALUES, ['true', 'false'])))(
         'Method "%s" returns expected result: (%O, %O, %s)',
         (method, value, type, isRequired, result) => {
-            const call = () => TypeAudit[method](value, type, 'value:test', isRequired);
+            const call = () => TypeAudit[method](value, type, 'This inner variable', isRequired);
             if (result instanceof Error) {
                 const outcome = expect(call);
                 outcome.toThrow(result.constructor);
-                outcome.toThrow(new RegExp(`^Value "test" ${isRequired ? 'must be' : 'can be only'} .+: `));
+                outcome.toThrow(new RegExp(`^This inner variable ${isRequired ? 'must be' : 'can be only'} .+: `));
             }
             else {
                 expect(call()).toBe(result);
@@ -411,7 +423,7 @@ describe('Module "TypeAudit"', () => {
     }, TYPED_METHODS, pick(VALUES, ['str-1']), omit(VALUES, ['func', 'str-2']), pick(VALUES, ['true'])))(
         'Method "%s" throws error at wrong item type: (%O, %O, %s)',
         (method, value, type, isRequired, result) => {
-            const call = () => Is[method](value, type, isRequired);
+            const call = () => TypeAudit[method](value, type, 'value:test', isRequired);
             if (result instanceof Error) {
                 const outcome = expect(call);
                 outcome.toThrow(result.constructor);
