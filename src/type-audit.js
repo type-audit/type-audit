@@ -64,9 +64,9 @@ const _errMessage = (naming, type, value, isRequired) => {
         if (0 < i && i < naming.length - 1) {
             // Если двоеточие есть, и это не первый и не последний символ, то:
             const key = naming.substring(0, i);
-            name = (key === 'arg'
-                ? 'Argument'
-                : `${key.charAt(0).toUpperCase()}${key.substring(1)} "${naming.substring(i + 1)}"`);
+            name = key === 'arg'
+                ? `Argument "${naming.substring(i + 1)}"`
+                : `${key.charAt(0).toUpperCase()}${key.substring(1)} "${naming.substring(i + 1)}"`;
         }
         else {
             name = naming;
