@@ -78,7 +78,7 @@ const ARRAY_VALUES = {
 
 
 describe('Module "TypeAudit"', () => {
-    it('Содержит все нужные и не содержит посторонние методы', () => {
+    it('Contains all necessary and not contains any extra methods', () => {
         const methods = Utils.getOwnMethods(TypeAudit);
         expect(
             methods.length
@@ -90,7 +90,7 @@ describe('Module "TypeAudit"', () => {
         ).toBeTruthy();
     });
 
-    it('Содержит все нужные и не содержит посторонние свойства', () => {
+    it('Contains all necessary and not contains any extra properties', () => {
         const PROPS = ['is', 'prop'];
         const properties = Utils.getOwnProperties(TypeAudit);
         expect(
@@ -103,20 +103,20 @@ describe('Module "TypeAudit"', () => {
         ).toBeTruthy();
     });
 
-    it('Свойство "is" в норме', () => {
+    it('Property "is" is ok', () => {
         expect(
             TypeAudit.is === Is
         ).toBeTruthy();
     });
 
-    it('Свойство "prop" в наличии', () => {
+    it('Property "prop" is present', () => {
         const {prop} = TypeAudit;
         expect(
             prop != null && typeof prop === 'object' && !Array.isArray(prop)
         ).toBeTruthy();
     });
 
-    it('Свойство "prop" содержит все нужные и не содержит посторонние методы', () => {
+    it('Property "prop" contains all necessary and not contains any extra methods', () => {
         const methods = Utils.getOwnMethods(TypeAudit.prop);
         expect(
             methods.length
@@ -128,7 +128,7 @@ describe('Module "TypeAudit"', () => {
         ).toBeTruthy();
     });
 
-    it('Свойство "prop" содержит все нужные и не содержит посторонние свойства', () => {
+    it('Property "prop" contains all necessary and not contains any extra properties', () => {
         const properties = Utils.getOwnProperties(TypeAudit.prop);
         expect(
             properties.length
@@ -298,7 +298,7 @@ describe('Module "TypeAudit"', () => {
             {result:new TypeError()}
         ]
     }, SIMPLE_METHODS, VALUES, pick(VALUES, ['true', 'false'])))(
-        'Метод "%s": (%O, %s)',
+        'Method "%s" returns expected result: (%O, %s)',
         (method, value, isRequired, result) => {
             const call = () => TypeAudit[method](value, 'value:test', isRequired);
             if (result instanceof Error) {
@@ -328,7 +328,7 @@ describe('Module "TypeAudit"', () => {
             {result:new TypeError()}
         ]
     }, TYPED_METHODS, VALUES, pick(TYPES, ['cls-1', 'cls-2']), pick(VALUES, ['true', 'false'])))(
-        'Метод "%s": (%O, %O, %s)',
+        'Method "%s" returns expected result: (%O, %O, %s)',
         (method, value, Clazz, isRequired, result) => {
             const call = () => TypeAudit[method](value, Clazz, 'value:test', isRequired);
             if (result instanceof Error) {
@@ -370,7 +370,7 @@ describe('Module "TypeAudit"', () => {
             {result:new TypeError()}
         ]
     }, TYPED_METHODS, {...VALUES, ...ARRAY_VALUES}, TYPES, pick(VALUES, ['true', 'false'])))(
-        'Метод "%s": (%O, %O, %s)',
+        'Method "%s" returns expected result: (%O, %O, %s)',
         (method, value, type, isRequired, result) => {
             const call = () => TypeAudit[method](value, type, 'value:test', isRequired);
             if (result instanceof Error) {

@@ -77,7 +77,7 @@ const ARRAY_VALUES = {
 
 
 describe('Module "Is"', () => {
-    it('Содержит все нужные и не содержит посторонние методы', () => {
+    it('Contains all necessary and not contains any extra methods', () => {
         const methods = Utils.getOwnMethods(Is);
         expect(
             methods.length
@@ -89,7 +89,7 @@ describe('Module "Is"', () => {
         ).toBeTruthy();
     });
 
-    it('Содержит все нужные и не содержит посторонние свойства', () => {
+    it('Contains all necessary and not contains any extra properties', () => {
         const properties = Utils.getOwnProperties(Is);
         expect(
             properties.length
@@ -259,7 +259,7 @@ describe('Module "Is"', () => {
             {result:false}
         ]
     }, SIMPLE_METHODS, VALUES, pick(VALUES, ['true', 'false'])))(
-        'Метод "%s": (%O, %s)',
+        'Method "%s" returns expected result: (%O, %s)',
         (method, value, isRequired, result) => {
             expect(Is[method](value, isRequired)).toBe(result);
         }
@@ -281,7 +281,7 @@ describe('Module "Is"', () => {
             {result:false}
         ]
     }, TYPED_METHODS, VALUES, pick(TYPES, ['cls-1', 'cls-2']), pick(VALUES, ['true', 'false'])))(
-        'Метод "%s": (%O, %O, %s)',
+        'Method "%s" returns expected result: (%O, %O, %s)',
         (method, value, Clazz, isRequired, result) => {
             expect(Is[method](value, Clazz, isRequired)).toBe(result);
         }
@@ -315,7 +315,7 @@ describe('Module "Is"', () => {
             {result:false}
         ]
     }, TYPED_METHODS, {...VALUES, ...ARRAY_VALUES}, TYPES, pick(VALUES, ['true', 'false'])))(
-        'Метод "%s": (%O, %O, %s)',
+        'Method "%s" returns expected result: (%O, %O, %s)',
         (method, value, type, isRequired, result) => {
             expect(Is[method](value, type, isRequired)).toBe(result);
         }
