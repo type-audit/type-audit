@@ -295,7 +295,7 @@ describe('Module "TypeAudit"', () => {
             },
             {result:new TypeError()}
         ]
-    }, SIMPLE_METHODS, VALUES, pick(VALUES, ['true', 'false'])))(
+    }, VALUES, pick(VALUES, ['true', 'false'])))(
         'Method "%s" returns expected result: (%O, %s)',
         (method, value, isRequired, result) => {
             const call = () => TypeAudit[method](value, 'arg:test', isRequired);
@@ -337,7 +337,7 @@ describe('Module "TypeAudit"', () => {
             },
             {result:new TypeError()}
         ]
-    }, TYPED_METHODS, VALUES, pick(TYPES, ['cls-1', 'cls-2']), pick(VALUES, ['true', 'false'])))(
+    }, VALUES, pick(TYPES, ['cls-1', 'cls-2']), pick(VALUES, ['true', 'false'])))(
         'Method "%s" returns expected result: (%O, %O, %s)',
         (method, value, Clazz, isRequired, result) => {
             const call = () => TypeAudit[method](value, Clazz, 'value:test', isRequired);
@@ -356,7 +356,7 @@ describe('Module "TypeAudit"', () => {
         instanceOf:[
             {result:new TypeError()}
         ]
-    }, TYPED_METHODS, pick(VALUES, ['str-1']), omit(VALUES, ['func']), pick(VALUES, ['true'])))(
+    }, pick(VALUES, ['str-1']), omit(VALUES, ['func']), pick(VALUES, ['true'])))(
         'Method "%s" throws error at wrong value class: (%O, %O, %s)',
         (method, value, Clazz, isRequired, result) => {
             const call = () => Is[method](value, Clazz, isRequired);
@@ -398,7 +398,7 @@ describe('Module "TypeAudit"', () => {
             },
             {result:new TypeError()}
         ]
-    }, TYPED_METHODS, {...VALUES, ...ARRAY_VALUES}, TYPES, pick(VALUES, ['true', 'false'])))(
+    }, {...VALUES, ...ARRAY_VALUES}, TYPES, pick(VALUES, ['true', 'false'])))(
         'Method "%s" returns expected result: (%O, %O, %s)',
         (method, value, type, isRequired, result) => {
             const call = () => TypeAudit[method](value, type, 'This inner variable', isRequired);
@@ -417,7 +417,7 @@ describe('Module "TypeAudit"', () => {
         arrayOf:[
             {result:new TypeError()}
         ]
-    }, TYPED_METHODS, pick(VALUES, ['str-1']), omit(VALUES, ['func', 'str-2']), pick(VALUES, ['true'])))(
+    }, pick(VALUES, ['str-1']), omit(VALUES, ['func', 'str-2']), pick(VALUES, ['true'])))(
         'Method "%s" throws error at wrong item type: (%O, %O, %s)',
         (method, value, type, isRequired, result) => {
             const call = () => TypeAudit[method](value, type, 'value:test', isRequired);

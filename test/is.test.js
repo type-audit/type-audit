@@ -256,7 +256,7 @@ describe('Module "Is"', () => {
             },
             {result:false}
         ]
-    }, SIMPLE_METHODS, VALUES, pick(VALUES, ['true', 'false'])))(
+    }, VALUES, pick(VALUES, ['true', 'false'])))(
         'Method "%s" returns expected result: (%O, %s)',
         (method, value, isRequired, result) => {
             expect(Is[method](value, isRequired)).toBe(result);
@@ -278,7 +278,7 @@ describe('Module "Is"', () => {
             },
             {result:false}
         ]
-    }, TYPED_METHODS, VALUES, pick(TYPES, ['cls-1', 'cls-2']), pick(VALUES, ['true', 'false'])))(
+    }, VALUES, pick(TYPES, ['cls-1', 'cls-2']), pick(VALUES, ['true', 'false'])))(
         'Method "%s" returns expected result: (%O, %O, %s)',
         (method, value, Clazz, isRequired, result) => {
             expect(Is[method](value, Clazz, isRequired)).toBe(result);
@@ -289,7 +289,7 @@ describe('Module "Is"', () => {
         instanceOf:[
             {result:new TypeError()}
         ]
-    }, TYPED_METHODS, pick(VALUES, ['str-1']), omit(VALUES, ['func']), pick(VALUES, ['true'])))(
+    }, pick(VALUES, ['str-1']), omit(VALUES, ['func']), pick(VALUES, ['true'])))(
         'Method "%s" throws error at wrong value class: (%O, %O, %s)',
         (method, value, Clazz, isRequired, result) => {
             const call = () => Is[method](value, Clazz, isRequired);
@@ -331,7 +331,7 @@ describe('Module "Is"', () => {
             },
             {result:false}
         ]
-    }, TYPED_METHODS, {...VALUES, ...ARRAY_VALUES}, TYPES, pick(VALUES, ['true', 'false'])))(
+    }, {...VALUES, ...ARRAY_VALUES}, TYPES, pick(VALUES, ['true', 'false'])))(
         'Method "%s" returns expected result: (%O, %O, %s)',
         (method, value, type, isRequired, result) => {
             expect(Is[method](value, type, isRequired)).toBe(result);
@@ -342,7 +342,7 @@ describe('Module "Is"', () => {
         arrayOf:[
             {result:new TypeError()}
         ]
-    }, TYPED_METHODS, pick(VALUES, ['str-1']), omit(VALUES, ['func', 'str-2']), pick(VALUES, ['true'])))(
+    }, pick(VALUES, ['str-1']), omit(VALUES, ['func', 'str-2']), pick(VALUES, ['true'])))(
         'Method "%s" throws error at wrong item type: (%O, %O, %s)',
         (method, value, type, isRequired, result) => {
             const call = () => Is[method](value, type, isRequired);

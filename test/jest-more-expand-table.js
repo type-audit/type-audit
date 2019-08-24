@@ -81,18 +81,14 @@ const _getResult = (variants, keys, method) => {
 /**
  * @public
  * @param {object} shortTable
- * @param {Array<string>} methods
  * @param {object} arg1Values
  * @param {object} arg2Values
  * @param {object} arg3Values
  * @return {Array<Array>}
  */
-export const expandTable = (shortTable, methods, ...argValues) => {
+export const expandTable = (shortTable, ...argValues) => {
     if (shortTable == null || typeof shortTable !== 'object') {
         throw new Error(`Wrong argument "shortTable:" ${shortTable}`);
-    }
-    if (!Array.isArray(methods) || !methods.every((item) => typeof item === 'string')) {
-        throw new Error(`Wrong argument "methods:" ${methods}`);
     }
     argValues.forEach((values, i) => {
         if (values == null || typeof values !== 'object') {
@@ -103,9 +99,6 @@ export const expandTable = (shortTable, methods, ...argValues) => {
     const argLengths = argKeys.map((values) => values.length);
     const argTotal = _multiplyAll(argLengths);
     return Object.keys(shortTable).reduce((table, method) => {
-        if (!methods.includes(method)) {
-            throw new Error(`Wrong shortTable method "${method}"`);
-        }
         const variants = shortTable[method];
         if (!Array.isArray(variants)) {
             throw new Error(`Wrong shortTable section for "${method}"`);
