@@ -43,9 +43,7 @@ const TYPES = {
 const VALUES = {
     func: () => {},
     'arr-void': [],
-    'arr-num': [0, 123, -123, 0.123, -0.123],
     'obj-1': {},
-    'obj-2': {prop:'123'},
     'obj-c1': new TestClass1(),
     'obj-c2': new TestClass2(),
     'str-1': '',
@@ -64,9 +62,9 @@ const VALUES = {
 const ARRAY_VALUES = {
     // 'arr-void' contains in VALUES
     'arr-func': [VALUES.func],
-    'arr-obj': [VALUES['obj-1'], VALUES['obj-2'], VALUES['obj-c1'], VALUES['obj-c2']],
+    'arr-obj': [VALUES['obj-1'], VALUES['obj-c1'], VALUES['obj-c2']],
     'arr-str': [VALUES['str-1'], VALUES['str-2']],
-    // 'arr-num' contains in VALUES
+    'arr-num': [0, 123, -123, 0.123, -0.123],
     'arr-bool': [VALUES.true, VALUES.false],
     'arr-cls-1': [VALUES['obj-c1']],
     'arr-cls-2': [VALUES['obj-c2']],
@@ -115,7 +113,6 @@ describe('Module "Is"', () => {
             {
                 args:[
                     ['obj-1', null],
-                    ['obj-2', null],
                     ['obj-c1', null],
                     ['obj-c2', null],
                     ['null', 'false'],
