@@ -32,16 +32,20 @@ export const makeMessage = (naming, type, value, isRequired) => {
 };
 
 /**
- * @param {string} message Текст сообщения об ошибке
+ * @param {Error} err Настраиваемая ошибка
+ * @param {number} deep Глубина сброса стека
  * @return {Error}
  */
-export const create = (message) => {
-    let err = new TypeError(message);
+export const setup = (err, deep) => {
+    const {message} = err;
     const stack = err.stack.split(/[\r\n]+/);
-    stack.splice(stack[0].indexOf(message) !== -1 ? 1 : 0, 2);
+    stack.splice(stack[0].indexOf(message) !== -1 ? 1 : 0, deep);
     if (err.fileName !== undefined && err.lineNumber !== undefined) {
+        // This for browsers like Mozilla
         const where = stack[0].match(/@([^\s]+):([0-9]+):([0-9]+)$/i);
-        err = new TypeError(message, where[1], +where[2], +where[3]);
+        err.fileName = where[1];
+        err.lineNumber = +where[2];
+        err.columnNumber = +where[3];
     }
     err.stack = stack.join('\n');
     return err;

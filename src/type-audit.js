@@ -52,10 +52,10 @@ const _propGetChecker = (method, typeInfo, isRequired) => (props, propName, comp
     const value = props[propName];
     if (needTypeInfo ? !checker(value, typeInfo, isRequired) : !checker(value, isRequired)) {
         const type = TYPE_NAMES[method];
-        return Err.create(Err.makeMessage(
+        return Err.setup(new TypeError(Err.makeMessage(
             `Prop "${propName}" in component "${componentName}"`,
             needTypeInfo ? type(typeInfo) : type, value, isRequired
-        ));
+        )), 1);
     }
 };
 
@@ -105,7 +105,9 @@ checkers.forEach((method) => {
          */
         checker = (value, typeInfo, naming, isRequired) => {
             if (!Is[method](value, typeInfo, isRequired)) {
-                throw Err.create(Err.makeMessage(naming, TYPE_NAMES[method](typeInfo), value, isRequired));
+                throw Err.setup(new TypeError(Err.makeMessage(
+                    naming, TYPE_NAMES[method](typeInfo), value, isRequired
+                )), 1);
             }
         };
     }
@@ -118,7 +120,7 @@ checkers.forEach((method) => {
          */
         checker = (value, naming, isRequired) => {
             if (!Is[method](value, isRequired)) {
-                throw Err.create(Err.makeMessage(naming, TYPE_NAMES[method], value, isRequired));
+                throw Err.setup(new TypeError(Err.makeMessage(naming, TYPE_NAMES[method], value, isRequired)), 1);
             }
         };
     }
