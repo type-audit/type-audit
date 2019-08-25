@@ -316,12 +316,6 @@ describe('Module "TypeAudit"', () => {
         outcome.toThrow(new RegExp(`^Input data must be .+: `));
     });
 
-    it('Thrown error has correct message (if wrong naming)', () => {
-        const outcome = expect(() => TypeAudit.string(VALUES['num-1'], VALUES['num-1'], VALUES['true']));
-        outcome.toThrow(TypeError);
-        outcome.toThrow(new RegExp('^Wrong argument "naming": '));
-    });
-
     it.each(expandTable({
         instanceOf:[
             {

@@ -67,6 +67,19 @@ const ERRORS = {
 
 describe('Module "Err"', () => {
     it.each([
+        ...Object.values(omit(VALUES, ['func', 'str-2'])).map((item) => [item]),
+    ])(
+        'Method "makeMessage" throws error at wrong naming (variant %#)',
+        (naming) => {
+            const outcome = expect(
+                () => Err.makeMessage(naming, 'string', null, null)
+            );
+            outcome.toThrow(TypeError);
+            outcome.toThrow(/^Wrong argument "naming": /);
+        }
+    );
+
+    it.each([
         ...Object.values(omit(VALUES, ['str-2', 'obj-1', 'obj-c1', 'obj-c2'])).map((item) => [item]),
         ...Object.values(omit(VALUES, ['str-2'])).map((item) => [{name:item}]),
     ])(
