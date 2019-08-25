@@ -82,8 +82,7 @@ const TypeAudit = {
 
 checkers.forEach((method) => {
     const needTypeInfo = 2 < Is[method].length;
-    let checker;
-    if (needTypeInfo) {
+    TypeAudit[method] = needTypeInfo
         /**
          * @public
          * @param {*} value Проверяемое значение
@@ -91,30 +90,24 @@ checkers.forEach((method) => {
          * @param {function|string} naming Наименование при ошибке (строка или функция, возвращающая строку)
          * @param {boolean} [isRequired] Значение null или undefined не допускается (опционально)
          */
-        checker = (value, typeInfo, naming, isRequired) => {
+        ? (value, typeInfo, naming, isRequired) => {
             if (!Is[method](value, typeInfo, isRequired)) {
                 throw Err.setup(new TypeError(Err.makeMessage(
                     naming, TYPE_NAMES[method](typeInfo), value, isRequired
                 )), 1);
             }
-        };
-    }
-    else {
+        }
         /**
          * @public
          * @param {*} value Проверяемое значение
          * @param {function|string} naming Наименование при ошибке (строка или функция, возвращающая строку)
          * @param {boolean} [isRequired] Значение null или undefined не допускается (опционально)
          */
-        checker = (value, naming, isRequired) => {
+        : (value, naming, isRequired) => {
             if (!Is[method](value, isRequired)) {
                 throw Err.setup(new TypeError(Err.makeMessage(naming, TYPE_NAMES[method], value, isRequired)), 1);
             }
         };
-    }
-    if (checker !== undefined) {
-        TypeAudit[method] = checker;
-    }
 });
 Object.freeze(TypeAudit);
 
