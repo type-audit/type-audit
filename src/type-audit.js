@@ -32,22 +32,10 @@ const TYPE_NAMES = {
  */
 const checkers = Object.getOwnPropertyNames(Is).filter((item) => typeof Is[item] === 'function');
 
-/**
- * Количество дополнительных аргументов проверок из класса Is
- * @type {object<number>}
- */
-const argLevels = checkers.reduce((result, method) => {
-    const level = Is[method].length - 2;
-    if (0 < level) {
-        result[method] = level;
-    }
-    return result;
-}, {});
-
 
 
 const _propGetChecker = (method, typeInfo, isRequired) => (props, propName, componentName) => {
-    const needTypeInfo = 0 < argLevels[method];
+    const needTypeInfo = 2 < Is[method].length;
     const checker = Is[method];
     const value = props[propName];
     if (needTypeInfo ? !checker(value, typeInfo, isRequired) : !checker(value, isRequired)) {
@@ -63,7 +51,7 @@ const _propGetChecker = (method, typeInfo, isRequired) => (props, propName, comp
  * Набор проверок типов данных свойств react-компонентов
  */
 const Prop = checkers.reduce((result, method) => {
-    const needTypeInfo = 0 < argLevels[method];
+    const needTypeInfo = 2 < Is[method].length;
     const f = needTypeInfo ? (typeInfo) => _propGetChecker(method, typeInfo, false) : _propGetChecker(method, false);
     f.isRequired = needTypeInfo
         ? (typeInfo) => _propGetChecker(method, typeInfo, true)
@@ -93,7 +81,7 @@ const TypeAudit = {
 };
 
 checkers.forEach((method) => {
-    const needTypeInfo = 0 < argLevels[method];
+    const needTypeInfo = 2 < Is[method].length;
     let checker;
     if (needTypeInfo) {
         /**
