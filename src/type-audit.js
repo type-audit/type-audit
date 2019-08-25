@@ -4,29 +4,6 @@ import * as Err from './err';
 
 
 /**
- * @type {object}
- */
-const TYPE_NAMES = {
-    function: 'a function',
-    object: 'an object',
-    instanceOf: (objectClass) => () => `instance of ${objectClass.name}`,
-    array: 'an array',
-    notEmptyArray: 'not empty array',
-    arrayOf: (itemType) => () => `array of ${typeof itemType === 'function' ? itemType.name : itemType}`,
-    string: 'a string',
-    notEmptyString: 'not empty string',
-    number: 'a number',
-    positiveNumber: 'positive number',
-    notNegativeNumber: 'not negative number',
-    integer: 'an integer',
-    positiveInteger: 'positive integer',
-    notNegativeInteger: 'not negative integer',
-    boolean: 'a boolean'
-};
-
-
-
-/**
  * Список всех имён проверок из класса Is
  * @type {Array<string>}
  */
@@ -39,10 +16,9 @@ const _propGetChecker = (method, typeInfo, isRequired) => (props, propName, comp
     const checker = Is[method];
     const value = props[propName];
     if (needTypeInfo ? !checker(value, typeInfo, isRequired) : !checker(value, isRequired)) {
-        const type = TYPE_NAMES[method];
         return Err.setup(new TypeError(Err.makeMessage(
             `Prop "${propName}" in component "${componentName}"`,
-            needTypeInfo ? type(typeInfo) : type, value, isRequired
+            needTypeInfo ? {name:method, type:typeInfo} : method, value, isRequired
         )), 1);
     }
 };
@@ -92,9 +68,7 @@ checkers.forEach((method) => {
          */
         ? (value, typeInfo, naming, isRequired) => {
             if (!Is[method](value, typeInfo, isRequired)) {
-                throw Err.setup(new TypeError(Err.makeMessage(
-                    naming, TYPE_NAMES[method](typeInfo), value, isRequired
-                )), 1);
+                throw Err.setup(new TypeError(Err.makeMessage(naming, {name:method, type:typeInfo}, value, isRequired)), 1);
             }
         }
         /**
@@ -105,7 +79,7 @@ checkers.forEach((method) => {
          */
         : (value, naming, isRequired) => {
             if (!Is[method](value, isRequired)) {
-                throw Err.setup(new TypeError(Err.makeMessage(naming, TYPE_NAMES[method], value, isRequired)), 1);
+                throw Err.setup(new TypeError(Err.makeMessage(naming, method, value, isRequired)), 1);
             }
         };
 });

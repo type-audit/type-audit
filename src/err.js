@@ -1,12 +1,36 @@
 
 /**
+ * @private
+ * @type {object}
+ */
+const TYPE_NAMES = {
+    function: 'a function',
+    object: 'an object',
+    instanceOf: (objectClass) => `instance of ${objectClass.name}`,
+    array: 'an array',
+    notEmptyArray: 'not empty array',
+    arrayOf: (itemType) => `array of ${typeof itemType === 'function' ? itemType.name : itemType}`,
+    string: 'a string',
+    notEmptyString: 'not empty string',
+    number: 'a number',
+    positiveNumber: 'positive number',
+    notNegativeNumber: 'not negative number',
+    integer: 'an integer',
+    positiveInteger: 'positive integer',
+    notNegativeInteger: 'not negative integer',
+    boolean: 'a boolean'
+};
+
+
+
+/**
  * @param {function|string} naming Наименование при ошибке (строка или функция, возвращающая строку)
- * @param {function|string} type Тип проверяемого значения
+ * @param {string|object} typeInfo Информация о типе проверяемого значения
  * @param {*} value Проверяемое значение
  * @param {boolean} [isRequired] Значение null или undefined не допускается (опционально)
  * @return {string}
  */
-export const makeMessage = (naming, type, value, isRequired) => {
+export const makeMessage = (naming, typeInfo, value, isRequired) => {
     let name;
     if (typeof naming === 'function') {
         name = naming();
@@ -28,7 +52,26 @@ export const makeMessage = (naming, type, value, isRequired) => {
     else {
         throw new TypeError(`Wrong argument "naming": ${naming}`);
     }
-    return `${name} ${isRequired ? 'must be' : 'can be only'} ${typeof type === 'function' ? type() : type}: ${value}`;
+    const isComplexType = typeInfo != null && typeof typeInfo === 'object';
+    let method = isComplexType ? typeInfo.name : typeInfo;
+    if (typeof method !== 'string' || method.length === 0) {
+        throw new TypeError(`Wrong argument "typeInfo": ${typeInfo}`);
+    }
+    if (!(method in TYPE_NAMES)) {
+        throw new TypeError(`Argument "typeInfo" contains an unknown ${isComplexType ? 'name' : 'value'}: ${typeInfo}`);
+    }
+    const type = TYPE_NAMES[method];
+    let typeName;
+    if (typeof type === 'function') {
+        if (!isComplexType || !('type' in typeInfo)) {
+            throw new TypeError(`Argument "typeInfo" must contain a type specification: ${typeInfo}`);
+        }
+        typeName = type(typeInfo.type);
+    }
+    else {
+        typeName = type;
+    }
+    return `${name} ${isRequired ? 'must be' : 'can be only'} ${typeName}: ${value}`;
 };
 
 /**
