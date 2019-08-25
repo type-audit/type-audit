@@ -55,7 +55,7 @@ export const makeMessage = (naming, typeInfo, value, isRequired) => {
         throw new TypeError(`Wrong argument "naming": ${naming}`);
     }
     const isComplexType = typeInfo != null && typeof typeInfo === 'object';
-    let method = isComplexType ? typeInfo.name : typeInfo;
+    const method = isComplexType ? typeInfo.name : typeInfo;
     if (typeof method !== 'string' || method.length === 0) {
         throw new TypeError(`Wrong argument "typeInfo": ${typeInfo}`);
     }
