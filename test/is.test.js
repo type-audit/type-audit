@@ -296,7 +296,7 @@ describe('Module "Is"', () => {
             if (result instanceof Error) {
                 const outcome = expect(call);
                 outcome.toThrow(result.constructor);
-                outcome.toThrow(new RegExp('^Wrong argument "valueClass": '));
+                outcome.toThrow(/^Wrong argument "valueClass": /);
             }
             else {
                 expect(call()).toBe(result);
@@ -349,7 +349,7 @@ describe('Module "Is"', () => {
             if (result instanceof Error) {
                 const outcome = expect(call);
                 outcome.toThrow(result.constructor);
-                outcome.toThrow(new RegExp('^Wrong argument "itemType": '));
+                outcome.toThrow(/^Wrong argument "itemType": /);
             }
             else {
                 expect(call()).toBe(result);

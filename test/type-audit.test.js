@@ -313,7 +313,7 @@ describe('Module "TypeAudit"', () => {
     it('Thrown error has correct message (if functional naming)', () => {
         const outcome = expect(() => TypeAudit.string(VALUES['num-1'], () => 'Input data', VALUES['true']));
         outcome.toThrow(TypeError);
-        outcome.toThrow(new RegExp(`^Input data must be .+: `));
+        outcome.toThrow(/^Input data must be .+: /);
     });
 
     it.each(expandTable({
@@ -357,7 +357,7 @@ describe('Module "TypeAudit"', () => {
             if (result instanceof Error) {
                 const outcome = expect(call);
                 outcome.toThrow(result.constructor);
-                outcome.toThrow(new RegExp('^Wrong argument "valueClass": '));
+                outcome.toThrow(/^Wrong argument "valueClass": /);
             }
             else {
                 expect(call()).toBe(result);
@@ -418,7 +418,7 @@ describe('Module "TypeAudit"', () => {
             if (result instanceof Error) {
                 const outcome = expect(call);
                 outcome.toThrow(result.constructor);
-                outcome.toThrow(new RegExp('^Wrong argument "itemType": '));
+                outcome.toThrow(/^Wrong argument "itemType": /);
             }
             else {
                 expect(call()).toBe(result);
