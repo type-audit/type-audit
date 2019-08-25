@@ -72,9 +72,11 @@ const Is = {
         }
         return (!isRequired && value == null) || (Array.isArray(value) && value.every(isClass
             ? (item) => item instanceof itemType
-            : (itemType === 'object'
-                ? (item) => item !== null && typeof item === itemType
-                : (item) => typeof item === itemType))
+            : (itemType === 'array'
+                ? (item) => Array.isArray(item)
+                : (itemType === 'object'
+                    ? (item) => item !== null && typeof item === 'object' && !Array.isArray(item)
+                    : (item) => typeof item === itemType)))
         );
     },
 
