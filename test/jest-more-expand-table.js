@@ -66,7 +66,7 @@ const _getResult = (variants, keys, method) => {
         }
         else {
             if (!Array.isArray(args)) {
-                throw new Error(`Wrong property "args" in shortTable section for "${method}": ${args}`);
+                throw new TypeError(`Wrong property "args" in shortTable section for "${method}": ${args}`);
             }
             if (args.some((item) => _isRelevantKeys(item, keys))) {
                 return result;
@@ -87,12 +87,12 @@ const _getResult = (variants, keys, method) => {
  * @return {Array<Array>}
  */
 export const expandTable = (shortTable, ...argValues) => {
-    if (shortTable == null || typeof shortTable !== 'object') {
-        throw new Error(`Wrong argument "shortTable:" ${shortTable}`);
+    if (shortTable == null || typeof shortTable !== 'object' || Array.isArray(shortTable)) {
+        throw new TypeError(`Wrong argument "shortTable": ${shortTable}`);
     }
     argValues.forEach((values, i) => {
-        if (values == null || typeof values !== 'object') {
-            throw new Error(`Wrong argument "arg${i + 1}Values:" ${values}`);
+        if (values == null || typeof values !== 'object' || Array.isArray(values)) {
+            throw new TypeError(`Wrong argument "arg${i + 1}Values": ${values}`);
         }
     });
     const argKeys = argValues.map((values) => Object.keys(values));
@@ -101,7 +101,7 @@ export const expandTable = (shortTable, ...argValues) => {
     return Object.keys(shortTable).reduce((table, method) => {
         const variants = shortTable[method];
         if (!Array.isArray(variants)) {
-            throw new Error(`Wrong shortTable section for "${method}"`);
+            throw new TypeError(`Wrong shortTable section for "${method}"`);
         }
         for (let i = 0; i < argTotal; i += 1) {
             const keys = _select(argKeys, _makeIndexes(argLengths, i));
