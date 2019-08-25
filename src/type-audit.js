@@ -71,7 +71,9 @@ checkers.forEach((method) => {
          */
         ? (value, typeInfo, naming, isRequired) => {
             if (!Is[method](value, typeInfo, isRequired)) {
-                throw Err.setup(new TypeError(Err.makeMessage(naming, {name:method, type:typeInfo}, value, isRequired)), 1);
+                throw Err.setup(new TypeError(Err.makeMessage(
+                    naming, {name:method, type:typeInfo}, value, isRequired
+                )), 1);
             }
         }
         /**
