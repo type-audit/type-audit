@@ -33,6 +33,7 @@ class TestClass2 {}
 
 const TYPES = {
     func: 'function',
+    arr: 'array',
     obj: 'object',
     str: 'string',
     num: 'number',
@@ -63,6 +64,7 @@ const VALUES = {
 const ARRAY_VALUES = {
     // 'arr-void' contains in VALUES
     'arr-func': [VALUES.func],
+    'arr-arr': [VALUES['arr-void']],
     'arr-obj': [VALUES['obj-1'], VALUES['obj-c1'], VALUES['obj-c2']],
     'arr-str': [VALUES['str-1'], VALUES['str-2']],
     'arr-num': [0, 123, -123, 0.123, -0.123],
@@ -370,6 +372,7 @@ describe('Module "TypeAudit"', () => {
             {
                 args:[
                     ['arr-void', 'func', null],
+                    ['arr-void', 'arr', null],
                     ['arr-void', 'obj', null],
                     ['arr-void', 'str', null],
                     ['arr-void', 'num', null],
@@ -377,6 +380,7 @@ describe('Module "TypeAudit"', () => {
                     ['arr-void', 'cls-1', null],
                     ['arr-void', 'cls-2', null],
                     ['arr-func', 'func', null],
+                    ['arr-arr', 'arr', null],
                     ['arr-obj', 'obj', null],
                     ['arr-cls-1', 'obj', null],
                     ['arr-cls-2', 'obj', null],
