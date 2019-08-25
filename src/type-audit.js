@@ -1,5 +1,6 @@
 import Is from './is';
 import * as Err from './err';
+import Prop from './prop';
 
 
 
@@ -9,34 +10,6 @@ import * as Err from './err';
  * @type {Array<string>}
  */
 const checkers = Object.getOwnPropertyNames(Is).filter((item) => typeof Is[item] === 'function');
-
-
-
-const _propGetChecker = (method, typeInfo, isRequired) => (props, propName, componentName) => {
-    const needTypeInfo = 2 < Is[method].length;
-    const checker = Is[method];
-    const value = props[propName];
-    if (needTypeInfo ? !checker(value, typeInfo, isRequired) : !checker(value, isRequired)) {
-        return Err.setup(new TypeError(Err.makeMessage(
-            `Prop "${propName}" in component "${componentName}"`,
-            needTypeInfo ? {name:method, type:typeInfo} : method, value, isRequired
-        )), 1);
-    }
-};
-
-/**
- * The set of checks of data types of properties react components
- */
-const Prop = checkers.reduce((result, method) => {
-    const needTypeInfo = 2 < Is[method].length;
-    const f = needTypeInfo ? (typeInfo) => _propGetChecker(method, typeInfo, false) : _propGetChecker(method, false);
-    f.isRequired = needTypeInfo
-        ? (typeInfo) => _propGetChecker(method, typeInfo, true)
-        : _propGetChecker(method, true);
-    result[method] = f;
-    return result;
-}, {});
-Object.freeze(Prop);
 
 
 
