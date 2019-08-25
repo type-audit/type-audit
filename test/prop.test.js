@@ -2,8 +2,6 @@ import * as Utils from './test-utils';
 import pick from 'lodash.pick';
 //import omit from 'lodash.omit';
 import {expandTable} from './jest-more-expand-table';
-import TypeAudit from '../src/type-audit';
-import Is from '../src/is';
 import Prop from '../src/prop';
 
 
@@ -79,9 +77,10 @@ const ARRAY_VALUES = {
 
 
 
-describe('Module "TypeAudit"', () => {
+describe('Module "Prop"', () => {
+
     it('Contains all necessary and not contains any extra methods', () => {
-        const methods = Utils.getOwnMethods(TypeAudit);
+        const methods = Utils.getOwnMethods(Prop);
         expect(
             methods.length
         ).toBe(
@@ -93,28 +92,12 @@ describe('Module "TypeAudit"', () => {
     });
 
     it('Contains all necessary and not contains any extra properties', () => {
-        const PROPS = ['is', 'prop'];
-        const properties = Utils.getOwnProperties(TypeAudit);
+        const properties = Utils.getOwnProperties(Prop);
         expect(
             properties.length
         ).toBe(
-            PROPS.length
+            0
         );
-        expect(
-            properties.every((name) => PROPS.indexOf(name) !== -1)
-        ).toBeTruthy();
-    });
-
-    it('Property "is" is ok', () => {
-        expect(
-            TypeAudit.is === Is
-        ).toBeTruthy();
-    });
-
-    it('Property "prop" is ok', () => {
-        expect(
-            TypeAudit.prop === Prop
-        ).toBeTruthy();
     });
 
     it.each(expandTable({
@@ -279,25 +262,23 @@ describe('Module "TypeAudit"', () => {
     }, VALUES, pick(VALUES, ['true', 'false'])))(
         'Method "%s" returns expected result: (%O, %s)',
         (method, value, isRequired, result) => {
-            const call = () => TypeAudit[method](value, 'arg:test', isRequired);
+            const probe = (isRequired ? Prop[method].isRequired : Prop[method])(
+                {someProp:value}, 'someProp', 'SomeComponent'
+            );
             if (result instanceof Error) {
-                const outcome = expect(call);
-                outcome.toThrow(result.constructor);
-                outcome.toThrow(new RegExp(`^Argument "test" ${isRequired ? 'must be' : 'can be only'} .+: `));
+                expect(probe).toBeInstanceOf(result.constructor);
+                expect(probe.message).toMatch(
+                    new RegExp(`^Prop "someProp" in component "SomeComponent" ${isRequired ? 'must be' : 'can be only'} .+: `)
+                );
             }
             else {
-                expect(call()).toBe(result);
+                expect(probe).toBe(result);
             }
         }
     );
 
 
 
-    it('Thrown error has correct message (if functional naming)', () => {
-        const outcome = expect(() => TypeAudit.string(VALUES['num-1'], () => 'Input data', VALUES['true']));
-        outcome.toThrow(TypeError);
-        outcome.toThrow(/^Input data must be .+: /);
-    });
 
 
 
@@ -319,14 +300,17 @@ describe('Module "TypeAudit"', () => {
     }, VALUES, pick(TYPES, ['cls-1', 'cls-2']), pick(VALUES, ['true', 'false'])))(
         'Method "%s" returns expected result: (%O, %O, %s)',
         (method, value, Clazz, isRequired, result) => {
-            const call = () => TypeAudit[method](value, Clazz, 'value:test', isRequired);
+            const probe = (isRequired ? Prop[method].isRequired : Prop[method])(Clazz)(
+                {someProp:value}, 'someProp', 'SomeComponent'
+            );
             if (result instanceof Error) {
-                const outcome = expect(call);
-                outcome.toThrow(result.constructor);
-                outcome.toThrow(new RegExp(`^Value "test" ${isRequired ? 'must be' : 'can be only'} .+: `));
+                expect(probe).toBeInstanceOf(result.constructor);
+                expect(probe.message).toMatch(
+                    new RegExp(`^Prop "someProp" in component "SomeComponent" ${isRequired ? 'must be' : 'can be only'} .+: `)
+                );
             }
             else {
-                expect(call()).toBe(result);
+                expect(probe).toBe(result);
             }
         }
     );
@@ -338,7 +322,9 @@ describe('Module "TypeAudit"', () => {
     }, pick(VALUES, ['str-1']), omit(VALUES, ['func']), pick(VALUES, ['true'])))(
         'Method "%s" throws error at wrong value class: (%O, %O, %s)',
         (method, value, Clazz, isRequired, result) => {
-            const call = () => TypeAudit[method](value, Clazz, 'value:test', isRequired);
+            const call = () => (isRequired ? Prop[method].isRequired : Prop[method])(Clazz)(
+                {someProp:value}, 'someProp', 'SomeComponent'
+            );
             if (result instanceof Error) {
                 const outcome = expect(call);
                 outcome.toThrow(result.constructor);
@@ -382,14 +368,17 @@ describe('Module "TypeAudit"', () => {
     }, {...VALUES, ...ARRAY_VALUES}, TYPES, pick(VALUES, ['true', 'false'])))(
         'Method "%s" returns expected result: (%O, %O, %s)',
         (method, value, type, isRequired, result) => {
-            const call = () => TypeAudit[method](value, type, 'This inner variable', isRequired);
+            const probe = (isRequired ? Prop[method].isRequired : Prop[method])(type)(
+                {someProp:value}, 'someProp', 'SomeComponent'
+            );
             if (result instanceof Error) {
-                const outcome = expect(call);
-                outcome.toThrow(result.constructor);
-                outcome.toThrow(new RegExp(`^This inner variable ${isRequired ? 'must be' : 'can be only'} .+: `));
+                expect(probe).toBeInstanceOf(result.constructor);
+                expect(probe.message).toMatch(
+                    new RegExp(`^Prop "someProp" in component "SomeComponent" ${isRequired ? 'must be' : 'can be only'} .+: `)
+                );
             }
             else {
-                expect(call()).toBe(result);
+                expect(probe).toBe(result);
             }
         }
     );
@@ -401,7 +390,9 @@ describe('Module "TypeAudit"', () => {
     }, pick(VALUES, ['str-1']), omit(VALUES, ['func', 'str-2']), pick(VALUES, ['true'])))(
         'Method "%s" throws error at wrong item type: (%O, %O, %s)',
         (method, value, type, isRequired, result) => {
-            const call = () => TypeAudit[method](value, type, 'value:test', isRequired);
+            const call = () => (isRequired ? Prop[method].isRequired : Prop[method])(type)(
+                {someProp:value}, 'someProp', 'SomeComponent'
+            );
             if (result instanceof Error) {
                 const outcome = expect(call);
                 outcome.toThrow(result.constructor);
@@ -412,4 +403,8 @@ describe('Module "TypeAudit"', () => {
             }
         }
     );*/
+
+
+
+
 });
