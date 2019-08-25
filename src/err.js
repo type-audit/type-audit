@@ -24,10 +24,12 @@ const TYPE_NAMES = {
 
 
 /**
- * @param {function|string} naming Наименование при ошибке (строка или функция, возвращающая строку)
- * @param {string|object} typeInfo Информация о типе проверяемого значения
- * @param {*} value Проверяемое значение
- * @param {boolean} [isRequired] Значение null или undefined не допускается (опционально)
+ * @public
+ * Create error message
+ * @param {function|string} naming Name on error (string or function that returns a string)
+ * @param {string|object} typeInfo Info about type of checked value
+ * @param {*} value Checked value
+ * @param {boolean} [isRequired] Values null and undefined are not allowed (optional)
  * @return {string}
  */
 export const makeMessage = (naming, typeInfo, value, isRequired) => {
@@ -39,7 +41,7 @@ export const makeMessage = (naming, typeInfo, value, isRequired) => {
     if (typeof naming === 'string' && naming.length !== 0) {
         const i = naming.indexOf(':');
         if (0 < i && i < naming.length - 1) {
-            // Если двоеточие есть, и это не первый и не последний символ, то:
+            // If there is a colon, and it is not the first and not the last character, then:
             const key = naming.substring(0, i);
             name = key === 'arg'
                 ? `Argument "${naming.substring(i + 1)}"`
@@ -75,8 +77,10 @@ export const makeMessage = (naming, typeInfo, value, isRequired) => {
 };
 
 /**
- * @param {Error} err Настраиваемая ошибка
- * @param {number} deep Глубина сброса стека
+ * @public
+ * Setup of error properties
+ * @param {Error} err Configured error
+ * @param {number} deep Depth of the stack drop
  * @return {Error}
  */
 export const setup = (err, deep) => {

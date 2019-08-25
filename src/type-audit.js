@@ -4,7 +4,8 @@ import * as Err from './err';
 
 
 /**
- * Список всех имён проверок из класса Is
+ * @private
+ * The list of all check names from the class Is
  * @type {Array<string>}
  */
 const checkers = Object.getOwnPropertyNames(Is).filter((item) => typeof Is[item] === 'function');
@@ -24,7 +25,7 @@ const _propGetChecker = (method, typeInfo, isRequired) => (props, propName, comp
 };
 
 /**
- * Набор проверок типов данных свойств react-компонентов
+ * The set of checks of data types of properties react components
  */
 const Prop = checkers.reduce((result, method) => {
     const needTypeInfo = 2 < Is[method].length;
@@ -40,7 +41,9 @@ Object.freeze(Prop);
 
 
 /**
- * Экспортируемый объект
+ * Exported object
+ * @public
+ * @type {object}
  */
 const TypeAudit = {
     /**
@@ -61,10 +64,10 @@ checkers.forEach((method) => {
     TypeAudit[method] = needTypeInfo
         /**
          * @public
-         * @param {*} value Проверяемое значение
-         * @param {string|function} typeInfo Инормация о типе/классе проверяемого значения
-         * @param {function|string} naming Наименование при ошибке (строка или функция, возвращающая строку)
-         * @param {boolean} [isRequired] Значение null или undefined не допускается (опционально)
+         * @param {*} value Checked value
+         * @param {string|function} typeInfo Info about type or class of checked value
+         * @param {function|string} naming Name on error (string or function that returns a string)
+         * @param {boolean} [isRequired] Values null and undefined are not allowed (optional)
          */
         ? (value, typeInfo, naming, isRequired) => {
             if (!Is[method](value, typeInfo, isRequired)) {
@@ -73,9 +76,9 @@ checkers.forEach((method) => {
         }
         /**
          * @public
-         * @param {*} value Проверяемое значение
-         * @param {function|string} naming Наименование при ошибке (строка или функция, возвращающая строку)
-         * @param {boolean} [isRequired] Значение null или undefined не допускается (опционально)
+         * @param {*} value Checked value
+         * @param {function|string} naming Name on error (string or function that returns a string)
+         * @param {boolean} [isRequired] Values null and undefined are not allowed (optional)
          */
         : (value, naming, isRequired) => {
             if (!Is[method](value, isRequired)) {
