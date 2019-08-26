@@ -63,19 +63,61 @@ const ERRORS = {
     }
 };
 
+const NAMINGS = [
+    'arg:someArg',
+    'param:someParam',
+    'Some name'
+];
+
+
+
+const outerJoin = (a, b) => {
+    const result = [];
+    for (let i = 0; i < a.length; i += 1) {
+        for (let j = 0; j < b.length; j += 1) {
+            result.push([a[i], b[j]]);
+        }
+    }
+    return result;
+};
+
 
 
 describe('Module "Err"', () => {
+    it.each(outerJoin([...NAMINGS, ...NAMINGS.map((item) => () => item)], [true, false]))(
+        'Method "makeMessage" returns expected result (variant %#)',
+        (naming, isRequired) => {
+            expect(
+                Err.makeMessage(naming, 'string', VALUES['str-2'], isRequired)
+            ).toMatch(
+                new RegExp(`(?:Argument "someArg"|Param "someParam"|Some name) ${isRequired ? 'must be' : 'can be only'} a string: ${VALUES['str-2']}`)
+            );
+        }
+    );
+
     it.each([
-        ...Object.values(omit(VALUES, ['func', 'str-2'])).map((item) => [item]),
+        ...Object.values(omit(VALUES, ['func', 'str-2'])).map((item) => [item])
     ])(
-        'Method "makeMessage" throws error at wrong naming (variant %#)',
+        'Method "makeMessage" throws error at wrong naming value (variant %#)',
         (naming) => {
             const outcome = expect(
                 () => Err.makeMessage(naming, 'string', null, null)
             );
             outcome.toThrow(TypeError);
             outcome.toThrow(/^Wrong argument "naming": /);
+        }
+    );
+
+    it.each([
+        ...Object.values(omit(VALUES, ['func', 'str-2'])).map((item) => [() => item])
+    ])(
+        'Method "makeMessage" throws error at naming function returns a wrong result (variant %#)',
+        (naming) => {
+            const outcome = expect(
+                () => Err.makeMessage(naming, 'string', null, null)
+            );
+            outcome.toThrow(TypeError);
+            outcome.toThrow(/^Argument "naming" returns a wrong result: /);
         }
     );
 

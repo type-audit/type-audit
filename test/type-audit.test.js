@@ -291,16 +291,6 @@ describe('Module "TypeAudit"', () => {
         }
     );
 
-
-
-    it('Thrown error has correct message (if functional naming)', () => {
-        const outcome = expect(() => TypeAudit.string(VALUES['num-1'], () => 'Input data', VALUES['true']));
-        outcome.toThrow(TypeError);
-        outcome.toThrow(/^Input data must be .+: /);
-    });
-
-
-
     it.each(expandTable({
         instanceOf:[
             {
