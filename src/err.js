@@ -33,26 +33,20 @@ const TYPE_NAMES = {
  * @return {string}
  */
 export const makeMessage = (naming, typeInfo, value, isRequired) => {
-    let name;
-    if (typeof naming === 'function') {
-        name = naming();
+    const isFunc = typeof naming === 'function';
+    let name = isFunc ? naming() : naming;
+    if (typeof name !== 'string' || name.length === 0) {
+        throw new TypeError(
+            isFunc ? `Argument "naming" returns a wrong result: ${name}` : `Wrong argument "naming": ${name}`
+        );
     }
-    else
-    if (typeof naming === 'string' && naming.length !== 0) {
-        const i = naming.indexOf(':');
-        if (0 < i && i < naming.length - 1) {
-            // If there is a colon, and it is not the first and not the last character, then:
-            const key = naming.substring(0, i);
-            name = key === 'arg'
-                ? `Argument "${naming.substring(i + 1)}"`
-                : `${key.charAt(0).toUpperCase()}${key.substring(1)} "${naming.substring(i + 1)}"`;
-        }
-        else {
-            name = naming;
-        }
-    }
-    else {
-        throw new TypeError(`Wrong argument "naming": ${naming}`);
+    const i = name.indexOf(':');
+    if (0 < i && i < name.length - 1) {
+        // If there is a colon, and it is not the first and not the last character, then:
+        const key = name.substring(0, i);
+        name = key === 'arg'
+            ? `Argument "${name.substring(i + 1)}"`
+            : `${key.charAt(0).toUpperCase()}${key.substring(1)} "${name.substring(i + 1)}"`;
     }
     const isComplexType = typeInfo != null && typeof typeInfo === 'object';
     const method = isComplexType ? typeInfo.name : typeInfo;
