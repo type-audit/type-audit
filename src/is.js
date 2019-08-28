@@ -1,11 +1,11 @@
 /**
- * Набор методов проверки
+ * Set of checking methods
  */
 const Is = {
     /**
      * @public
-     * @param {*} value Проверяемое значение
-     * @param {boolean} [isRequired] Значение null или undefined не допускается (опционально)
+     * @param {*} value Checked value
+     * @param {boolean} [isRequired] Values null and undefined are not allowed (optional)
      * @return {boolean}
      */
     function(value, isRequired) {
@@ -14,8 +14,8 @@ const Is = {
 
     /**
      * @public
-     * @param {*} value Проверяемое значение
-     * @param {boolean} [isRequired] Значение null или undefined не допускается (опционально)
+     * @param {*} value Checked value
+     * @param {boolean} [isRequired] Values null and undefined are not allowed (optional)
      * @return {boolean}
      */
     object(value, isRequired) {
@@ -24,9 +24,9 @@ const Is = {
 
     /**
      * @public
-     * @param {*} value Проверяемое значение
-     * @param {function} valueClass Класс проверяемого значения
-     * @param {boolean} [isRequired] Значение null или undefined не допускается (опционально)
+     * @param {*} value Checked value
+     * @param {function} valueClass Class of checked value
+     * @param {boolean} [isRequired] Values null and undefined are not allowed (optional)
      * @return {boolean}
      */
     instanceOf(value, valueClass, isRequired) {
@@ -38,8 +38,8 @@ const Is = {
 
     /**
      * @public
-     * @param {*} value Проверяемое значение
-     * @param {boolean} [isRequired] Значение null или undefined не допускается (опционально)
+     * @param {*} value Checked value
+     * @param {boolean} [isRequired] Values null and undefined are not allowed (optional)
      * @return {boolean}
      */
     array(value, isRequired) {
@@ -49,8 +49,8 @@ const Is = {
     /**
      * @public
 
-     * @param {*} value Проверяемое значение
-     * @param {boolean} [isRequired] Значение null или undefined не допускается (опционально)
+     * @param {*} value Checked value
+     * @param {boolean} [isRequired] Values null and undefined are not allowed (optional)
      * @return {boolean}
      */
     notEmptyArray(value, isRequired) {
@@ -59,9 +59,9 @@ const Is = {
 
     /**
      * @public
-     * @param {*} value Проверяемое значение
-     * @param {string|function} itemType Тип/класс элемента проверяемого значения
-     * @param {boolean} [isRequired] Значение null или undefined не допускается (опционально)
+     * @param {*} value Checked value
+     * @param {string|function} itemType Type or class of elements of checked value
+     * @param {boolean} [isRequired] Values null and undefined are not allowed (optional)
      * @return {boolean}
      */
     arrayOf(value, itemType, isRequired) {
@@ -82,8 +82,8 @@ const Is = {
 
     /**
      * @public
-     * @param {*} value Проверяемое значение
-     * @param {boolean} [isRequired] Значение null или undefined не допускается (опционально)
+     * @param {*} value Checked value
+     * @param {boolean} [isRequired] Values null and undefined are not allowed (optional)
      * @return {boolean}
      */
     string(value, isRequired) {
@@ -92,8 +92,8 @@ const Is = {
 
     /**
      * @public
-     * @param {*} value Проверяемое значение
-     * @param {boolean} [isRequired] Значение null или undefined не допускается (опционально)
+     * @param {*} value Checked value
+     * @param {boolean} [isRequired] Values null and undefined are not allowed (optional)
      * @return {boolean}
      */
     notEmptyString(value, isRequired) {
@@ -102,8 +102,8 @@ const Is = {
 
     /**
      * @public
-     * @param {*} value Проверяемое значение
-     * @param {boolean} [isRequired] Значение null или undefined не допускается (опционально)
+     * @param {*} value Checked value
+     * @param {boolean} [isRequired] Values null and undefined are not allowed (optional)
      * @return {boolean}
      */
     number(value, isRequired) {
@@ -112,8 +112,8 @@ const Is = {
 
     /**
      * @public
-     * @param {*} value Проверяемое значение
-     * @param {boolean} [isRequired] Значение null или undefined не допускается (опционально)
+     * @param {*} value Checked value
+     * @param {boolean} [isRequired] Values null and undefined are not allowed (optional)
      * @return {boolean}
      */
     positiveNumber(value, isRequired) {
@@ -122,8 +122,8 @@ const Is = {
 
     /**
      * @public
-     * @param {*} value Проверяемое значение
-     * @param {boolean} [isRequired] Значение null или undefined не допускается (опционально)
+     * @param {*} value Checked value
+     * @param {boolean} [isRequired] Values null and undefined are not allowed (optional)
      * @return {boolean}
      */
     notNegativeNumber(value, isRequired) {
@@ -132,8 +132,8 @@ const Is = {
 
     /**
      * @public
-     * @param {*} value Проверяемое значение
-     * @param {boolean} [isRequired] Значение null или undefined не допускается (опционально)
+     * @param {*} value Checked value
+     * @param {boolean} [isRequired] Values null and undefined are not allowed (optional)
      * @return {boolean}
      */
     integer(value, isRequired) {
@@ -142,8 +142,8 @@ const Is = {
 
     /**
      * @public
-     * @param {*} value Проверяемое значение
-     * @param {boolean} [isRequired] Значение null или undefined не допускается (опционально)
+     * @param {*} value Checked value
+     * @param {boolean} [isRequired] Values null and undefined are not allowed (optional)
      * @return {boolean}
      */
     positiveInteger(value, isRequired) {
@@ -153,8 +153,8 @@ const Is = {
 
     /**
      * @public
-     * @param {*} value Проверяемое значение
-     * @param {boolean} [isRequired] Значение null или undefined не допускается (опционально)
+     * @param {*} value Checked value
+     * @param {boolean} [isRequired] Values null and undefined are not allowed (optional)
      * @return {boolean}
      */
     notNegativeInteger(value, isRequired) {
@@ -164,8 +164,8 @@ const Is = {
 
     /**
      * @public
-     * @param {*} value Проверяемое значение
-     * @param {boolean} [isRequired] Значение null или undefined не допускается (опционально)
+     * @param {*} value Checked value
+     * @param {boolean} [isRequired] Values null and undefined are not allowed (optional)
      * @return {boolean}
      */
     boolean(value, isRequired) {
