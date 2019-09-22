@@ -27,12 +27,11 @@ const TYPE_NAMES = {
  * @public
  * Create error message
  * @param {function|string} naming Name on error (string or function that returns a string)
- * @param {string|object} typeInfo Info about type of checked value
+ * @param {string|object} info Info about failed checking (ame or detailed call info)
  * @param {*} value Checked value
- * @param {boolean} [isRequired] Values null and undefined are not allowed (optional)
  * @return {string}
  */
-export const makeMessage = (naming, typeInfo, value, isRequired) => {
+export const makeMessage = (naming, info, value) => {
     const isFunc = typeof naming === 'function';
     let name = isFunc ? naming() : naming;
     if (typeof name !== 'string' || name.length === 0) {
@@ -48,26 +47,28 @@ export const makeMessage = (naming, typeInfo, value, isRequired) => {
             ? `Argument "${name.substring(i + 1)}"`
             : `${key.charAt(0).toUpperCase()}${key.substring(1)} "${name.substring(i + 1)}"`;
     }
-    const isComplexType = typeInfo != null && typeof typeInfo === 'object';
-    const method = isComplexType ? typeInfo.name : typeInfo;
+    const isComplexInfo = info != null && typeof info === 'object';
+    const method = isComplexInfo ? info.name : info;
     if (typeof method !== 'string' || method.length === 0) {
-        throw new TypeError(`Wrong argument "typeInfo": ${typeInfo}`);
+        throw new TypeError(`Wrong argument "info": ${info}`);
     }
     if (!(method in TYPE_NAMES)) {
-        throw new TypeError(`Argument "typeInfo" contains an unknown ${isComplexType ? 'name' : 'value'}: ${typeInfo}`);
+        throw new TypeError(
+            `Argument "info" contains an unknown ${isComplexInfo ? 'name' : 'value'}: ${info}`
+        );
     }
-    const type = TYPE_NAMES[method];
     let typeName;
-    if (typeof type === 'function') {
-        if (!isComplexType || !('type' in typeInfo)) {
-            throw new TypeError(`Argument "typeInfo" must contain a type specification: ${typeInfo}`);
+    const expected = TYPE_NAMES[method];
+    if (typeof expected === 'function') {
+        if (!isComplexInfo || !('type' in info)) {
+            throw new TypeError(`Argument "info" must contain a type specification: ${info}`);
         }
-        typeName = type(typeInfo.type);
+        typeName = expected(info.type);
     }
     else {
-        typeName = type;
+        typeName = expected;
     }
-    return `${name} ${isRequired ? 'must be' : 'can be only'} ${typeName}: ${value}`;
+    return `${name} ${info.isRequired ? 'must be' : 'can be only'} ${typeName}: ${value}`;
 };
 
 /**
