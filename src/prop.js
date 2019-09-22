@@ -1,27 +1,20 @@
-import Is from './is';
+import auditors from './auditors';
 import * as Err from './err';
 
 
 
 /**
  * @private
- * The list of all check names from the class Is
- * @type {Array<string>}
+ * @param {function(*):boolean} auditor Checking function
+ * @return {function(props:object, propName:string, componentName:string):Error}
  */
-const checkers = Object.getOwnPropertyNames(Is).filter((item) => typeof Is[item] === 'function');
-
-
-
-const _getChecker = (method, isRequired, ...typeArgs) => (props, propName, componentName) => {
-    const needTypeInfo = typeArgs.length !== 0;
-    const checker = Is[method];
+const getChecker = (auditor) => (props, propName, componentName) => {
     const value = props[propName];
-    if (needTypeInfo ? !checker(value, typeArgs[0], isRequired) : !checker(value, isRequired)) {
+    if (!auditor(value)) {
         return Err.setup(new TypeError(Err.makeMessage(
             `Prop "${propName}" in component "${componentName}"`,
-            needTypeInfo ? {name:method, type:typeArgs[0]} : method,
-            value,
-            isRequired
+            {name:auditor.name, ...auditor.info},
+            value
         )), 1);
     }
 };
@@ -31,13 +24,20 @@ const _getChecker = (method, isRequired, ...typeArgs) => (props, propName, compo
  * @public
  * @type {object}
  */
-const Prop = checkers.reduce((result, method) => {
-    const needTypeInfo = 2 < Is[method].length;
-    const func = needTypeInfo ? (typeInfo) => _getChecker(method, false, typeInfo) : _getChecker(method, false);
-    func.isRequired = needTypeInfo ? (typeInfo) => _getChecker(method, true, typeInfo) : _getChecker(method, true);
-    result[method] = func;
-    return result;
-}, {});
+const Prop = {};
+Object.getOwnPropertyNames(auditors).forEach((method) => {
+    const getAuditor = auditors[method];
+    if (typeof getAuditor === 'function') {
+        const needTypeInfo = 1 < getAuditor.length;
+        const func = needTypeInfo
+            ? (typeInfo) => getChecker(getAuditor(typeInfo, false))
+            : getChecker(getAuditor(false));
+        func.isRequired = needTypeInfo
+            ? (typeInfo) => getChecker(getAuditor(typeInfo, true))
+            : getChecker(getAuditor(true));
+        Prop[method] = func;
+    }
+});
 Object.freeze(Prop);
 
 export default Prop;
