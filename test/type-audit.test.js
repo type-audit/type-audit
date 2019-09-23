@@ -9,7 +9,7 @@ import prop from '../src/prop';
 
 
 const SIMPLE_METHODS = [
-    'function',
+    'func',
     'object',
     'array',
     'notEmptyArray',
@@ -21,7 +21,7 @@ const SIMPLE_METHODS = [
     'integer',
     'positiveInteger',
     'notNegativeInteger',
-    'boolean'
+    'bool'
 ];
 
 const TYPED_METHODS = [
@@ -118,7 +118,7 @@ describe('Module "TypeAudit"', () => {
     });
 
     it.each(expandTable({
-        function:[
+        func:[
             {
                 args:[
                     ['func', null],
@@ -264,7 +264,7 @@ describe('Module "TypeAudit"', () => {
             },
             {result:new TypeError()}
         ],
-        boolean:[
+        bool:[
             {
                 args:[
                     ['true', null],

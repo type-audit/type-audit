@@ -7,7 +7,7 @@ import prop from '../src/prop';
 
 
 const SIMPLE_METHODS = [
-    'function',
+    'func',
     'object',
     'array',
     'notEmptyArray',
@@ -19,7 +19,7 @@ const SIMPLE_METHODS = [
     'integer',
     'positiveInteger',
     'notNegativeInteger',
-    'boolean'
+    'bool'
 ];
 
 const TYPED_METHODS = [
@@ -101,7 +101,7 @@ describe('Module "prop"', () => {
     });
 
     it.each(expandTable({
-        function:[
+        func:[
             {
                 args:[
                     ['func', null],
@@ -247,7 +247,7 @@ describe('Module "prop"', () => {
             },
             {result:new TypeError()}
         ],
-        boolean:[
+        bool:[
             {
                 args:[
                     ['true', null],
