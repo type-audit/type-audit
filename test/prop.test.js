@@ -2,7 +2,7 @@ import * as Utils from './test-utils';
 import pick from 'lodash.pick';
 //import omit from 'lodash.omit';
 import {expandTable} from './jest-more-expand-table';
-import Prop from '../src/prop';
+import prop from '../src/prop';
 
 
 
@@ -77,10 +77,10 @@ const ARRAY_VALUES = {
 
 
 
-describe('Module "Prop"', () => {
+describe('Module "prop"', () => {
 
     it('Contains all necessary and not contains any extra methods', () => {
-        const methods = Utils.getOwnMethods(Prop);
+        const methods = Utils.getOwnMethods(prop);
         expect(
             methods.length
         ).toBe(
@@ -92,7 +92,7 @@ describe('Module "Prop"', () => {
     });
 
     it('Contains all necessary and not contains any extra properties', () => {
-        const properties = Utils.getOwnProperties(Prop);
+        const properties = Utils.getOwnProperties(prop);
         expect(
             properties.length
         ).toBe(
@@ -262,7 +262,7 @@ describe('Module "Prop"', () => {
     }, VALUES, pick(VALUES, ['true', 'false'])))(
         'Method "%s" returns expected result: (%O, %s)',
         (method, value, isRequired, result) => {
-            const probe = (isRequired ? Prop[method].isRequired : Prop[method])(
+            const probe = (isRequired ? prop[method].isRequired : prop[method])(
                 {someProp:value}, 'someProp', 'SomeComponent'
             );
             if (result instanceof Error) {
@@ -300,7 +300,7 @@ describe('Module "Prop"', () => {
     }, VALUES, pick(TYPES, ['cls-1', 'cls-2']), pick(VALUES, ['true', 'false'])))(
         'Method "%s" returns expected result: (%O, %O, %s)',
         (method, value, Clazz, isRequired, result) => {
-            const probe = (isRequired ? Prop[method].isRequired : Prop[method])(Clazz)(
+            const probe = (isRequired ? prop[method].isRequired : prop[method])(Clazz)(
                 {someProp:value}, 'someProp', 'SomeComponent'
             );
             if (result instanceof Error) {
@@ -322,7 +322,7 @@ describe('Module "Prop"', () => {
     }, pick(VALUES, ['str-1']), omit(VALUES, ['func']), pick(VALUES, ['true'])))(
         'Method "%s" throws error at wrong value class: (%O, %O, %s)',
         (method, value, Clazz, isRequired, result) => {
-            const call = () => (isRequired ? Prop[method].isRequired : Prop[method])(Clazz)(
+            const call = () => (isRequired ? prop[method].isRequired : prop[method])(Clazz)(
                 {someProp:value}, 'someProp', 'SomeComponent'
             );
             if (result instanceof Error) {
@@ -368,7 +368,7 @@ describe('Module "Prop"', () => {
     }, {...VALUES, ...ARRAY_VALUES}, TYPES, pick(VALUES, ['true', 'false'])))(
         'Method "%s" returns expected result: (%O, %O, %s)',
         (method, value, type, isRequired, result) => {
-            const probe = (isRequired ? Prop[method].isRequired : Prop[method])(type)(
+            const probe = (isRequired ? prop[method].isRequired : prop[method])(type)(
                 {someProp:value}, 'someProp', 'SomeComponent'
             );
             if (result instanceof Error) {
@@ -390,7 +390,7 @@ describe('Module "Prop"', () => {
     }, pick(VALUES, ['str-1']), omit(VALUES, ['func', 'str-2']), pick(VALUES, ['true'])))(
         'Method "%s" throws error at wrong item type: (%O, %O, %s)',
         (method, value, type, isRequired, result) => {
-            const call = () => (isRequired ? Prop[method].isRequired : Prop[method])(type)(
+            const call = () => (isRequired ? prop[method].isRequired : prop[method])(type)(
                 {someProp:value}, 'someProp', 'SomeComponent'
             );
             if (result instanceof Error) {

@@ -3,8 +3,8 @@ import pick from 'lodash.pick';
 //import omit from 'lodash.omit';
 import {expandTable} from './jest-more-expand-table';
 import TypeAudit from '../src/type-audit';
-import Is from '../src/is';
-import Prop from '../src/prop';
+import auditors from '../src/auditors';
+import prop from '../src/prop';
 
 
 
@@ -107,13 +107,13 @@ describe('Module "TypeAudit"', () => {
 
     it('Property "is" is ok', () => {
         expect(
-            TypeAudit.is === Is
+            TypeAudit.is === auditors
         ).toBeTruthy();
     });
 
     it('Property "prop" is ok', () => {
         expect(
-            TypeAudit.prop === Prop
+            TypeAudit.prop === prop
         ).toBeTruthy();
     });
 

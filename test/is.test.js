@@ -2,7 +2,7 @@ import * as Utils from './test-utils';
 import pick from 'lodash.pick';
 import omit from 'lodash.omit';
 import {expandTable} from './jest-more-expand-table';
-import Is from '../src/is';
+import auditors from '../src/auditors';
 
 
 
@@ -77,9 +77,9 @@ const ARRAY_VALUES = {
 
 
 
-describe('Module "Is"', () => {
+describe('Module "auditors"', () => {
     it('Contains all necessary and not contains any extra methods', () => {
-        const methods = Utils.getOwnMethods(Is);
+        const methods = Utils.getOwnMethods(auditors);
         expect(
             methods.length
         ).toBe(
@@ -91,7 +91,7 @@ describe('Module "Is"', () => {
     });
 
     it('Contains all necessary and not contains any extra properties', () => {
-        const properties = Utils.getOwnProperties(Is);
+        const properties = Utils.getOwnProperties(auditors);
         expect(
             properties.length
         ).toBe(
@@ -261,7 +261,7 @@ describe('Module "Is"', () => {
     }, VALUES, pick(VALUES, ['true', 'false'])))(
         'Method "%s" returns expected result: (%O, %s)',
         (method, value, isRequired, result) => {
-            expect(Is[method](value, isRequired)).toBe(result);
+            expect(auditors[method](isRequired)(value)).toBe(result);
         }
     );
 
@@ -283,7 +283,7 @@ describe('Module "Is"', () => {
     }, VALUES, pick(TYPES, ['cls-1', 'cls-2']), pick(VALUES, ['true', 'false'])))(
         'Method "%s" returns expected result: (%O, %O, %s)',
         (method, value, Clazz, isRequired, result) => {
-            expect(Is[method](value, Clazz, isRequired)).toBe(result);
+            expect(auditors[method](Clazz, isRequired)(value)).toBe(result);
         }
     );
 
@@ -294,7 +294,7 @@ describe('Module "Is"', () => {
     }, pick(VALUES, ['str-1']), omit(VALUES, ['func']), pick(VALUES, ['true'])))(
         'Method "%s" throws error at wrong value class: (%O, %O, %s)',
         (method, value, Clazz, isRequired, result) => {
-            const call = () => Is[method](value, Clazz, isRequired);
+            const call = () => auditors[method](Clazz, isRequired)(value);
             if (result instanceof Error) {
                 const outcome = expect(call);
                 outcome.toThrow(result.constructor);
@@ -338,7 +338,7 @@ describe('Module "Is"', () => {
     }, {...VALUES, ...ARRAY_VALUES}, TYPES, pick(VALUES, ['true', 'false'])))(
         'Method "%s" returns expected result: (%O, %O, %s)',
         (method, value, type, isRequired, result) => {
-            expect(Is[method](value, type, isRequired)).toBe(result);
+            expect(auditors[method](type, isRequired)(value)).toBe(result);
         }
     );
 
@@ -349,7 +349,7 @@ describe('Module "Is"', () => {
     }, pick(VALUES, ['str-1']), omit(VALUES, ['func', 'str-2']), pick(VALUES, ['true'])))(
         'Method "%s" throws error at wrong item type: (%O, %O, %s)',
         (method, value, type, isRequired, result) => {
-            const call = () => Is[method](value, type, isRequired);
+            const call = () => auditors[method](type, isRequired)(value);
             if (result instanceof Error) {
                 const outcome = expect(call);
                 outcome.toThrow(result.constructor);
