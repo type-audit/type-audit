@@ -24,7 +24,7 @@ const getChecker = (auditor) => (props, propName, componentName) => {
  * @public
  * @type {object}
  */
-const Prop = {};
+const prop = {};
 Object.getOwnPropertyNames(auditors).forEach((method) => {
     const getAuditor = auditors[method];
     if (typeof getAuditor === 'function') {
@@ -35,9 +35,9 @@ Object.getOwnPropertyNames(auditors).forEach((method) => {
         func.isRequired = needTypeInfo
             ? (typeInfo) => getChecker(getAuditor(typeInfo, true))
             : getChecker(getAuditor(true));
-        Prop[method] = func;
+        prop[method] = func;
     }
 });
-Object.freeze(Prop);
+Object.freeze(prop);
 
-export default Prop;
+export default prop;

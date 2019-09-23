@@ -1,6 +1,6 @@
 import auditors from './auditors';
 import * as Err from './err';
-import Prop from './prop';
+import prop from './prop';
 
 
 
@@ -36,7 +36,7 @@ const TypeAudit = {
      * @public
      * @type {TypeAudit.prop}
      */
-    prop: Prop
+    prop: prop
 };
 Object.getOwnPropertyNames(auditors).forEach((method) => {
     const getAuditor = auditors[method];
