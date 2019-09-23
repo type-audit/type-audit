@@ -27,16 +27,12 @@ const getChecker = (auditor) => (props, propName, componentName) => {
 const prop = {};
 Object.getOwnPropertyNames(auditors).forEach((method) => {
     const getAuditor = auditors[method];
-    if (typeof getAuditor === 'function') {
-        const needTypeInfo = 1 < getAuditor.length;
-        const func = needTypeInfo
-            ? (typeInfo) => getChecker(getAuditor(typeInfo, false))
-            : getChecker(getAuditor(false));
-        func.isRequired = needTypeInfo
-            ? (typeInfo) => getChecker(getAuditor(typeInfo, true))
-            : getChecker(getAuditor(true));
-        prop[method] = func;
-    }
+    const needTypeInfo = 1 < getAuditor.length;
+    const func = needTypeInfo ? (typeInfo) => getChecker(getAuditor(typeInfo, false)) : getChecker(getAuditor(false));
+    func.isRequired = needTypeInfo
+        ? (typeInfo) => getChecker(getAuditor(typeInfo, true))
+        : getChecker(getAuditor(true));
+    prop[method] = func;
 });
 Object.freeze(prop);
 

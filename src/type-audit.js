@@ -40,24 +40,22 @@ const TypeAudit = {
 };
 Object.getOwnPropertyNames(auditors).forEach((method) => {
     const getAuditor = auditors[method];
-    if (typeof getAuditor === 'function') {
-        TypeAudit[method] = 1 < getAuditor.length
-            /**
-             * @public
-             * @param {*} value Checked value
-             * @param {string|function} typeInfo Info about type or class of checked value
-             * @param {function|string} naming Name on error (string or function that returns a string)
-             * @param {boolean} [isRequired] Values null and undefined are not allowed (optional)
-             */
-            ? (value, typeInfo, naming, isRequired) => audit(value, naming, getAuditor(typeInfo, isRequired))
-            /**
-             * @public
-             * @param {*} value Checked value
-             * @param {function|string} naming Name on error (string or function that returns a string)
-             * @param {boolean} [isRequired] Values null and undefined are not allowed (optional)
-             */
-            : (value, naming, isRequired) => audit(value, naming, getAuditor(isRequired));
-    }
+    TypeAudit[method] = 1 < getAuditor.length
+        /**
+         * @public
+         * @param {*} value Checked value
+         * @param {string|function} typeInfo Info about type or class of checked value
+         * @param {function|string} naming Name on error (string or function that returns a string)
+         * @param {boolean} [isRequired] Values null and undefined are not allowed (optional)
+         */
+        ? (value, typeInfo, naming, isRequired) => audit(value, naming, getAuditor(typeInfo, isRequired))
+        /**
+         * @public
+         * @param {*} value Checked value
+         * @param {function|string} naming Name on error (string or function that returns a string)
+         * @param {boolean} [isRequired] Values null and undefined are not allowed (optional)
+         */
+        : (value, naming, isRequired) => audit(value, naming, getAuditor(isRequired));
 });
 Object.freeze(TypeAudit);
 
