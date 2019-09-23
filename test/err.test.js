@@ -88,7 +88,7 @@ describe('Module "Err"', () => {
         'Method "makeMessage" returns expected result (variant %#)',
         (naming, isRequired) => {
             expect(
-                Err.makeMessage(naming, 'string', VALUES['str-2'], isRequired)
+                Err.makeMessage(naming, {name:'string', isRequired}, VALUES['str-2'])
             ).toMatch(
                 new RegExp(`(?:Argument "someArg"|Param "someParam"|Some name) ${isRequired ? 'must be' : 'can be only'} a string: ${VALUES['str-2']}`)
             );
@@ -101,7 +101,7 @@ describe('Module "Err"', () => {
         'Method "makeMessage" throws error at wrong naming value (variant %#)',
         (naming) => {
             const outcome = expect(
-                () => Err.makeMessage(naming, 'string', null, null)
+                () => Err.makeMessage(naming, 'string', null)
             );
             outcome.toThrow(TypeError);
             outcome.toThrow(/^Wrong argument "naming": /);
@@ -114,7 +114,7 @@ describe('Module "Err"', () => {
         'Method "makeMessage" throws error at naming function returns a wrong result (variant %#)',
         (naming) => {
             const outcome = expect(
-                () => Err.makeMessage(naming, 'string', null, null)
+                () => Err.makeMessage(naming, 'string', null)
             );
             outcome.toThrow(TypeError);
             outcome.toThrow(/^Argument "naming" returns a wrong result: /);
@@ -125,13 +125,13 @@ describe('Module "Err"', () => {
         ...Object.values(omit(VALUES, ['str-2', 'obj-1', 'obj-c1', 'obj-c2'])).map((item) => [item]),
         ...Object.values(omit(VALUES, ['str-2'])).map((item) => [{name:item}]),
     ])(
-        'Method "makeMessage" throws error at wrong typeInfo (variant %#)',
-        (typeInfo) => {
+        'Method "makeMessage" throws error at wrong info (variant %#)',
+        (info) => {
             const outcome = expect(
-                () => Err.makeMessage('Sample error name', typeInfo, null, null)
+                () => Err.makeMessage('Sample error name', info, null)
             );
             outcome.toThrow(TypeError);
-            outcome.toThrow(/^Wrong argument "typeInfo": /);
+            outcome.toThrow(/^Wrong argument "info": /);
         }
     );
 
@@ -139,13 +139,13 @@ describe('Module "Err"', () => {
         [VALUES['str-2']],
         [{name:VALUES['str-2']}]
     ])(
-        'Method "makeMessage" throws error at typeInfo with unknown name (variant %#)',
-        (typeInfo) => {
+        'Method "makeMessage" throws error at info with unknown name (variant %#)',
+        (info) => {
             const outcome = expect(
-                () => Err.makeMessage('Sample error name', typeInfo, null, null)
+                () => Err.makeMessage('Sample error name', info, null)
             );
             outcome.toThrow(TypeError);
-            outcome.toThrow(/^Argument "typeInfo" contains an unknown (?:name|value): /);
+            outcome.toThrow(/^Argument "info" contains an unknown (?:name|value): /);
         }
     );
 
@@ -155,13 +155,13 @@ describe('Module "Err"', () => {
         [{name:'instanceOf'}],
         [{name:'arrayOf'}]
     ])(
-        'Method "makeMessage" throws error at typeInfo without needed subtype (variant %#)',
-        (typeInfo) => {
+        'Method "makeMessage" throws error at info without needed subtype (variant %#)',
+        (info) => {
             const outcome = expect(
-                () => Err.makeMessage('Sample error name', typeInfo, null, null)
+                () => Err.makeMessage('Sample error name', info, null)
             );
             outcome.toThrow(TypeError);
-            outcome.toThrow(/^Argument "typeInfo" must contain a type specification: /);
+            outcome.toThrow(/^Argument "info" must contain a type specification: /);
         }
     );
 
