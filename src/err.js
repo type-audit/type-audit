@@ -4,7 +4,7 @@
  * @type {object}
  */
 const TYPE_NAMES = {
-    function: 'a function',
+    func: 'a function',
     object: 'an object',
     instanceOf: (objectClass) => `instance of ${objectClass.name}`,
     array: 'an array',
@@ -18,7 +18,7 @@ const TYPE_NAMES = {
     integer: 'an integer',
     positiveInteger: 'positive integer',
     notNegativeInteger: 'not negative integer',
-    boolean: 'a boolean'
+    bool: 'a boolean'
 };
 
 

@@ -23,10 +23,9 @@ const auditors = {
      * @param {boolean} [isRequired] Values null and undefined are not allowed (optional)
      * @return {function(*):boolean}
      */
-    function(isRequired) {
-        return withInfo({
-            ['function']: (value) => (!isRequired && value == null) || (typeof value === 'function')
-        }['function'], {isRequired});
+    func(isRequired) {
+        const func = (value) => (!isRequired && value == null) || (typeof value === 'function');
+        return withInfo(func, {isRequired});
     },
 
     /**
@@ -185,9 +184,9 @@ const auditors = {
      * @param {boolean} [isRequired] Values null and undefined are not allowed (optional)
      * @return {function(*):boolean}
      */
-    boolean(isRequired) {
-        const boolean = (value) => (!isRequired && value == null) || (typeof value === 'boolean');
-        return withInfo(boolean, {isRequired});
+    bool(isRequired) {
+        const bool = (value) => (!isRequired && value == null) || (typeof value === 'boolean');
+        return withInfo(bool, {isRequired});
     }
 };
 Object.freeze(auditors);
